@@ -1,0 +1,240 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Shopping cart template
+ *
+ * @var $block \Magento\Checkout\Block\Cart
+ */
+
+if ($block->getItemsCount()) {
+    echo $block->getChildHtml('with-items');
+} else {
+    echo $block->getChildHtml('no-items');
+}
+
+?>
+
+<a href="javascript:void(0);" id="click-me" style="display:none;">Click Me</a>
+
+
+<div id="popup-mpdal" style="display:none;">
+<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('cart_gift_message')->toHtml();?> 
+</div>
+
+
+<a href="javascript:void(0);" id="click-united-parcel-service" style="display:none;">Click Me</a>
+<div id="popup-mpdal-united-parcel-service" style="display:none;">
+<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('about_shipping_options')->toHtml();?> 
+</div>
+
+<a href="javascript:void(0);" id="click-freight-shipping" style="display:none;">Click Me</a>
+<div id="popup-mpdal-freight-shipping" style="display:none;">
+<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('about_shipping_options_freight_ship_only')->toHtml();?> 
+</div>
+
+<a href="javascript:void(0);" id="click-local-delivery" style="display:none;">Click Me</a>
+<div id="popup-mpdal-local-delivery" style="display:none;">
+<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('about_shipping_local_delivery')->toHtml();?> 
+</div>
+
+
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal', '!domReady'
+        ],
+        function(
+            $,
+            modal
+        ) {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: '',
+                buttons: false
+            };
+
+
+		jQuery('body').on('click', 'div#messages', function() {
+			jQuery('#click-me').trigger('click');
+		});
+		
+		var popup = modal(options, jQuery('#popup-mpdal'));
+		jQuery("#click-me").on('click',function(){ 
+			jQuery("#popup-mpdal").modal("openModal");
+		});
+		
+		
+		/////////// start
+		jQuery('body').on('click', 'span.abt-our-shipp-opt', function() {
+			jQuery('span.shipp-name').each(function(){			
+				var shipp_name = jQuery(this).text().toLowerCase();
+				shipp_name = shipp_name.split(' ').join('-');
+				jQuery('#click-'+shipp_name).trigger('click');				
+			});
+
+		});
+		
+		var popup_ups = modal(options, jQuery('#popup-mpdal-united-parcel-service'));
+		jQuery("#click-united-parcel-service").on('click',function(){ 
+			jQuery("#popup-mpdal-united-parcel-service").modal("openModal");
+		});
+		
+		var popup_freight = modal(options, jQuery('#popup-mpdal-freight-shipping'));
+		jQuery("#click-freight-shipping").on('click',function(){ 
+			jQuery("#popup-mpdal-freight-shipping").modal("openModal");
+		});
+		
+		var popup_freight = modal(options, jQuery('#popup-mpdal-local-delivery'));
+		jQuery("#click-local-delivery").on('click',function(){ 
+			jQuery("#popup-mpdal-local-delivery").modal("openModal");
+		});
+		
+		
+		////////// end
+		
+		jQuery( document ).ajaxComplete(function() {     
+			setTimeout( function()  {
+			
+			var yourul= window.location.href;
+			if(yourul.indexOf('?') != -1){
+				var acessToken=yourul.split('?')[1].split('=')[1];
+				jQuery('div#gift-options-cart-item-'+acessToken+' button.action.action-edit').trigger('click');
+			}
+			
+			}, 1000);
+			
+			});
+
+			
+			////// start gift wrap
+			jQuery('.gift-wrap').click(function(){
+				
+				var str = jQuery(this).attr('id');
+				var n = str.lastIndexOf('_');
+				var giftwrap_id = str.substring(n + 1);
+				
+				if(!$(this).is(':checked')){
+					jQuery("div#gift-options-cart-item-"+giftwrap_id).find('button.action-remove').trigger('click');
+					jQuery('body').trigger('processStart');
+					setTimeout(function(){
+						jQuery("div#gift-options-cart-item-"+giftwrap_id).find('button.action-save').trigger('click');
+					}, 1000);	
+				}else{
+					jQuery("div#gift-options-cart-item-"+giftwrap_id).find('span.gift_wrap_img').trigger('click');
+					jQuery('body').trigger('processStart');
+					setTimeout(function(){
+						jQuery("div#gift-options-cart-item-"+giftwrap_id).find('button.action-save').trigger('click');
+					}, 1000);	
+				}
+				
+				setTimeout(function(){
+						jQuery('body').trigger('processStop');
+					}, 10000);
+
+			});
+			
+			
+			jQuery('body').on('click', 'div.cart-add-gift-message-area', function(event) {
+				if (jQuery(this).find('a._active').length) {
+				}else{
+			
+					if (!event.isTrigger) {
+							jQuery(this).find('button.action-delete:first').trigger('click');
+					  }
+				}				
+			});
+			
+
+			setTimeout(function(){
+
+				jQuery('div.actions-toolbar').each(function(){
+					var gift_exist = 0;
+					if(jQuery(this).find("li.gift-wrapping-item._active").length){
+						gift_exist = 1;
+						jQuery(this).parent().parent().parent().find('.gift-wrap').attr('checked','checked');
+						jQuery(this).parent().parent().find('.gift-wrap').attr('checked','checked');
+						
+					}
+					if(jQuery(this).find("span.gift-wrapping-summary-title").length){
+						jQuery(this).parent().parent().parent().find('.gift-wrap').attr('checked','checked');
+						jQuery(this).parent().parent().find('.gift-wrap').attr('checked','checked');
+					}
+					
+
+
+				});
+				
+				jQuery('div.mygiftwrap').hide();
+				jQuery('div.originalgiftwrap').show();
+				jQuery('div.message').css('opacity','1');
+			}, 3500);
+			
+			
+			
+			jQuery("body").on('DOMSubtreeModified', "#block-summary", function() {	
+				jQuery('span.abt-our-shipp-opt').hide();
+				jQuery('.item-title span').each(function(){
+					if (jQuery(this).text().indexOf('United Parcel Service') > -1) {    
+							jQuery('span.abt-our-shipp-opt').show();		
+					}
+					if (jQuery(this).text().indexOf('Freight Shipping') > -1) {    
+							jQuery('span.abt-our-shipp-opt').show();		
+					}
+					if (jQuery(this).text().indexOf('Local Delivery') > -1) {    
+							jQuery('span.abt-our-shipp-opt').show();		
+					}
+				});			
+					
+			});
+			
+        }
+		
+		
+		
+		
+    );
+	
+
+   
+   
+	
+</script>
+
+<style>
+.gift-content {
+    /*display: block !important;*/
+}
+</style>
+
+<script>
+    require([
+        'jquery',
+        'mage/cookies'
+    ], function ($) {
+		
+		var date = new Date();
+		var minutes = 20;
+		date.setTime(date.getTime() + (minutes * 60 * 1000));
+		 
+		jQuery(document).on('focusout', "input[name='postcode']", function(){
+			var cart_postcode = jQuery(this).val();
+	       	$.cookie('cart_postcode', cart_postcode, { path: '/' }, { expires: date });//Set the cookies
+		});
+
+		
+		
+
+    });
+</script>
+
+<?php 
+

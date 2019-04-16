@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="carriers" translate="label" type="text" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="flatrate" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+			 <field id="pickup_companyname" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Pickup Company Name</label> <!-- Custom label -->
+                </field>
+                <field id="pickup_street" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Pickup Street</label> <!-- Custom label -->
+                </field>
+                <field id="pickup_city" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Pickup City</label> <!-- Custom label -->
+                </field>
+                <!--<field id="pickup_state" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Pickup State</label>
+                </field> -->
+				<field id="region" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Pickup State</label>
+                    <source_model>Magento\Tax\Model\System\Config\Source\Tax\Region</source_model>
+                </field>
+                <field id="pickup_zip" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Pickup Zip</label> <!-- Custom label -->
+                </field>
+                <field id="pickup_locationphone" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Pickup Location Phone</label> <!-- Custom label -->
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

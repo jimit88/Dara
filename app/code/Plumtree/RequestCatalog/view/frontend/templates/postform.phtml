@@ -1,0 +1,308 @@
+<?php
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile 
+
+?>
+<div class="request-catalog-area">
+<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('request-catalog')->toHtml();?>
+
+<?php
+$countryList=$block->getCountries();
+$regionList=$block->getRegion();
+
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance(); // Instance of object manager
+$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+$connection = $resource->getConnection();
+$tableName = $resource->getTableName('directory_country_region'); //gives table name with prefix
+ 
+$sql = "Select * FROM " . $tableName;
+
+$result = $connection->fetchAll($sql);
+/*echo '<pre>';
+foreach($result as $_result){
+var_dump($_result);
+}
+echo '</pre>';*/
+?>
+
+<?php  
+  //  $countryHelper = $objectManager->get('Magento\Directory\Model\Config\Source\Country');
+//    $countryFactory = $objectManager->get('Magento\Directory\Model\CountryFactory');
+    $countryCollection = $objectManager->get('Magento\Directory\Model\ResourceModel\Country\Collection');
+
+//echo 'ddddjjdddd:- '.$block->getCountryname("AD");
+
+$items = $countryCollection->loadByStore(null);
+/*echo '<pre>';
+foreach ($items as $item) {
+    var_dump($item->getData());
+}
+*/
+
+   // $countries = $this->countryInformationAcquirer->getCountriesInfo();
+/*
+    foreach ($countryCollection as $country) {
+		var_dump($country);
+	}	*/
+?>
+
+
+
+<div class="request-catalog-rgt-side">
+<div class="request-catalog-rgt-area">
+   <form class="request-catalog"
+      action="<?php /* @escapeNotVerified */ echo $block->getFormAction(); ?>"
+      id="requestcatalog_form"
+      method="post"
+      data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+      data-mage-init='{"validation":{}}'>
+     
+	                            
+                                
+    <fieldset class="fieldset">
+    
+        <legend class="legend"><span><?php /* @escapeNotVerified */ echo __('If you\'d like to join our mailing list and receive our latest catalog, please complete the form below.') ?></span></legend><br />
+        <div class="field name required">
+                <label class="label" for="first_name"><?php echo __('First Name') ?></label>
+                <div class="control">
+                        <input name="first_name" id="first_name" value="" class="input-text" type="text" data-validate="{required:true}"/>
+                </div>
+	</div>
+        <div class="field last_name required">
+            <label class="label" for="last_name"><span><?php /* @escapeNotVerified */ echo __('Last Name') ?></span></label>
+            <div class="control">
+                <input name="last_name" id="last_name" title="<?php /* @escapeNotVerified */ echo __('Last Name') ?>" value="" class="input-text" type="text" data-validate="{required:true}"/>
+            </div>
+        </div>
+		
+		<div class="field address required">
+            <label class="label" for="address"><span><?php /* @escapeNotVerified */ echo __('Address 1') ?></span> </label>
+            <div class="control">
+                <input name="address" id="address" title="<?php /* @escapeNotVerified */ echo __('Address 1') ?>" value="" class="input-text" type="text" data-validate="{required:true}"/>
+            </div>
+        </div>
+		
+        <div class="field address1 required">
+            <label class="label" for="address2"><span><?php /* @escapeNotVerified */ echo __('Address 2 ') ?></span> <span class="label-grey-italic">(optional)</span></label>
+            <div class="control">
+                <input name="address2" id="address2" title="<?php /* @escapeNotVerified */ echo __('Address 2') ?>" value="" class="input-text" type="text" />
+            </div>
+        </div>
+		
+		<div class="field city required">
+            <label class="label" for="city"><span><?php /* @escapeNotVerified */ echo __('City') ?></span></label>
+            <div class="control">
+                <input name="city" id="city" title="<?php /* @escapeNotVerified */ echo __('City') ?>" value="" class="input-text" type="text" data-validate="{required:true}"/>
+            </div>
+        </div>
+		
+		<div class="field state required">
+            <label class="label" for="state"><span><?php /* @escapeNotVerified */ echo __('State') ?></span>
+			
+			</label>
+            <div class="input-box">
+            <input type="hidden" name="region_id" id="region_id" value="" />
+            <input type="text" name="state_id" id="state_id" value="" style="display:none;" />
+
+             <select  id="theFolders" class="validate-select" title="theFolders"  name="theFolders" data-validate="{required:true}" >
+                <option value="">--Select--</option> 
+                <?php 
+                foreach($result as $_result){
+                    echo "<option name=".$_result['country_id']." title=".$_result['default_name']." >".$_result['default_name']."</option>";
+					//echo "<option value=".$_result['country_id'].">".$_result->getStatename($item['state_id'])."</option>";
+					//echo "<option value=".$_result['country_id']." >".$_result['default_name']."</option>";
+                }
+                ?>
+            </select>
+            
+            
+
+			</div>  
+                 </div>					
+							
+				<div class="field Zip required">
+            <label class="label" for="Zip"><span><?php /* @escapeNotVerified */ echo __('Zip') ?></span></label>
+            <div class="control">
+                <input name="zip" id="zip" title="<?php /* @escapeNotVerified */ echo __('Zip') ?>" value="" class="input-text" data-validate="{required:true}" type="text" />
+            </div>
+        </div>	
+        <div class="field country required">
+		<label class="label" for="Country"><span><?php /* @escapeNotVerified */ echo __('Country') ?></span></label>	
+        <div class="input-box">		
+        <input type="hidden" name="country_id" id="country_id" value="" />
+        
+        <select class="validate-select"  id="theYear" title="theYear" id="theYear" name="theYear" data-validate="{required:true}" >
+            <option value="">--Select--</option>
+            <?php 
+			foreach ($items as $item) {
+//				var_dump($item->getData());
+				echo "<option name=".$item['country_id']." title=".$block->getCountryname($item['country_id']).">".$block->getCountryname($item['country_id'])."</option>";
+			}
+			?>
+        </select>
+       	</div>
+        
+					</div>
+                    <div class="field email ">
+            <label class="label" for="email"><span><?php /* @escapeNotVerified */ echo __('Email') ?></span> <span class="label-grey-italic">(optional)</span></label>
+            <div class="control">
+                <input name="email" id="email_" title="<?php /* @escapeNotVerified */ echo __('Email') ?>" value="" class="input-text" type="email" />
+            </div>
+        </div>
+             <input type="hidden" value="complete" id="requested_catalogs_complete" name="Catalogs" class="checkbox" checked="checked">
+             <input type="hidden" value="status" id="status" name="Status" class="checkbox" checked="checked">
+                
+            <div class="newsletter-signup">
+				<div class="fields">
+					<input style="float: left;" type="checkbox" class="checkbox" name="signup_newsletter" id="signup_newsletter" value="1"> 
+					<label  for="signup_newsletter">Be the first to know about new arrivals, events and promotions. Subscribe to our email updates. </label>
+										<input type="hidden" name="is_general" id="is_general" value="1">
+									</div>
+
+			</div>
+                  <?php echo $block->getChildHtml('form.additional.info'); ?>	
+                </fieldset>  
+                 <div class="actions-toolbar">
+                 <div class="primary">
+                 <input type="hidden" name="hideit" id="hideit" value="" />
+                 <button type="submit" title="<?php /* @escapeNotVerified */ echo __('Submit') ?>" class="action submit primary">
+                <span class="cta-btn-text"><?php /* @escapeNotVerified */ echo __('Submit') ?></span>
+                <span class="cta-btn-icon">&nbsp;</span>
+            </button>
+        </div>
+    </div>
+		    
+		
+
+
+	
+		</form>
+		</div>
+		    </div>
+        
+   </div>
+   
+   
+<script>
+require(['jquery'],function($){ /*First call this function and after add your jQuery code*/
+
+jQuery( document ).ready(function() 
+{
+setTimeout(
+  function() 
+  {
+	$('select#theFolders').children('option').each(function() {
+            if ($(this).is("option[name='US']"))
+            { 
+				$(this).show();
+			}else{
+				$(this).hide();
+			}
+        });
+
+	$('select#theYear').children('option').each(function() {
+            if ($(this).is("option[name='US']"))
+            { 
+				$(this).prop('selected', 'selected').trigger('change');
+			}
+        });
+		
+  }, 4000);
+  
+  ////////////////
+  // reuqest our catalog start
+	/*$(document).on('change','#country',function() {
+	
+		var param = 'country='+$('#country').val();
+		$.ajax({
+			showLoader: true,
+			url: '',
+			data: param,
+			type: "GET",
+			dataType: 'json'
+		}).done(function (data) {
+			//data.value has the array of regions
+		});
+	});*/
+	
+	/*jQuery(document).on("change", '#country', function ($e) {
+		 alert('eeee');
+	});*/
+		
+	 $('#theYear').on('change', function () {
+		
+		 var FY = $(this).find('option:selected').attr('name');//val(); 
+		 //console.log('FY-name::::'+$(this).find('option:selected').attr('name'));
+		 //console.log('FY-value::::'+$(this).find('option:selected').val());
+		 var stateavailable = 0;
+		 if(FY != "0") {			 
+			 $('#theFolders option').each(function () {
+				 //$('option:not(:contains(' + FY + '))', this).hide();
+				   //$("option").hide();
+				   //$("option:not[value='" + FY +"']").hide();
+				   //$(this).hide();
+			 });
+			 $('#theFolders option').each(function () {
+				 //$('option:not(:contains(' + FY + '))', this).hide();
+				  // $("option[value='" + FY +"']").show();
+				  //$(this+"[value='" + FY +"']").show();
+				  if($(this).attr('name')== FY){
+					stateavailable = 1;
+					  $(this).show();
+				  }else{
+					  $(this).hide();
+				  }
+			 });
+		 } else {
+			 $('#theFolders option').show();
+		 }
+		 
+		
+		$('#country_id').val($(this).find('option:selected').text());
+		
+		if(stateavailable == 0){
+			 $('#state_id').show();
+			 $('#theFolders').hide();
+			 
+		}else{
+			$('#state_id').hide();
+			$('#theFolders').show();
+		}
+		 
+	 });
+	 
+	$( "#state_id" ).focusout(function() {
+	    $('#region_id').val($(this).attr('name'));
+  	});
+
+	$('#theYear').on('mousedown', function () {
+		 $('#theFolders option').show().find('option:contains("Select")', this).attr('selected', 'selected');
+	 });
+	
+	
+	$("#theFolders").change(function() {
+		$('#region_id').val($(this).find("option:selected").text());
+	});
+	
+	/*$('#theFolders').on('change', function () {
+		var value = $(this).attr('label');
+		alert(value);
+				//alert($('#theFolders').text());
+		$(this).addClass('kkkkkkkkkkk');
+		$('#region_id').val($(this).text());				 
+	});*/
+	
+});
+
+});
+</script>
+<style>
+.mage-error {
+    margin-top: 0 !important;
+}
+</style>

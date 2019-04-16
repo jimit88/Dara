@@ -1,0 +1,610 @@
+<?php
+
+
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+use Magento\Framework\App\Action\Action;
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @var $block \Magento\Catalog\Block\Product\ListProduct
+ */
+?>
+<?php
+$_productCollection = $block->getLoadedProductCollection();
+
+//echo preg_replace('/INNER JOIN `jh_search_tmp[\s\S]+?WHERE/', ' WHERE', $_productCollection->getSelect());
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+//$productRepository = $objectManager->get('\Magento\Catalog\Model\ProductRepository');
+if($this->getRequest()->getControllerName()=='category'){
+$_category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+}
+$request = $objectManager->get('Magento\Framework\App\Action\Context')->getRequest();
+$priceHelper = $objectManager->create('Magento\Framework\Pricing\Helper\Data');
+
+$variable = $objectManager->create('Magento\Variable\Model\Variable');
+$cus_pro_dis = $variable->loadByCode('cus_pro_dis')->getPlainValue();
+
+if ($_productCollection->count()<=0): ?>
+    <div class="message info empty"><div><?php /* @escapeNotVerified */ echo __('We can\'t find products matching the selection.') ?></div></div>
+<?php else: ?>
+    <?php echo $block->getToolbarHtml() ?>
+    <?php echo $block->getAdditionalHtml() ?>
+    <?php
+    if ($block->getMode() == 'grid') {
+        $viewMode = 'grid';
+        $image = 'category_page_grid';
+        $showDescription = false;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    } else {
+        $viewMode = 'list';
+        $image = 'category_page_list';
+        $showDescription = true;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+    }
+    /**
+     * Position for actions regarding image size changing in vde if needed
+     */
+    $pos = $block->getPositioned();
+	
+    ?>
+    <div class="products wrapper <?php /* @escapeNotVerified */ echo $viewMode; ?> products-<?php /* @escapeNotVerified */ echo $viewMode; ?>">
+        <?php $iterator = 1; ?>
+        <ol class="products list items product-items">
+            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+            <?php foreach ($_productCollection as $_product): ?>
+            
+            <?php 
+			$featured_product = "";
+			if($request->getFullActionName()!='catalogsearch_result_index'){
+			if($iterator==8 && $_category->getMylayout() == 2){
+			$featured_product = " featured-product fright ";
+			}elseif($iterator==23  && $_category->getMylayout() == 2){
+			$featured_product = " featured-product fleft ";
+			}else{
+			$featured_product = "";
+			}
+			} ?>
+                <?php /* @escapeNotVerified */ echo($iterator++ == 1) ? '<li class="item product product-item item-'.$iterator.$featured_product.'">' : '</li><li class="item product product-item item-'.$iterator.$featured_product.'">' ?>
+                <!--<script>
+    requirejs(['jquery', 'weltpixel_quickview' ],
+        function   ($, quickview) {
+            $(document).ready(function() {
+                /*$('.weltpixel-quickview').bind('click', function() {*/
+				$('.weltpixel-quickview').click(function(){
+                    var prodUrl = $(this).attr('data-quickview-url');
+                    if (prodUrl.length) {
+                        quickview.displayContent(prodUrl);
+                    }
+                });
+				
+				
+            });
+        });
+
+    window.weltpixel_quickview = <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->getConfig()); ?>;
+</script>-->
+                <div class="product-item-info" data-container="product-grid">
+                
+                <?php if($_product->getData('product_flag')){
+					//echo $product->getData('product_flag');
+					$pro_flag = $_product->getResource()->getAttribute('product_flag')->getFrontend()->getValue($_product);
+					$categories = ''; $twoflag = '';
+					$cats = explode(",", $pro_flag);
+					$i=1;
+					foreach($cats as $cat) {
+						$cat = trim($cat);
+						$categories .= "<span class='flag-".$i."'><img src=".$block->getViewFileUrl('images/'.$cat.'.png').">"  . "</span>\n";
+						$i++;
+					}
+					echo $categories;
+			
+					} ?>
+                    
+                    
+                    <?php
+                    $productImage = $block->getImage($_product, $image);
+                    if ($pos != null) {
+                        $position = ' style="left:' . $productImage->getWidth() . 'px;'
+                            . 'top:' . $productImage->getHeight() . 'px;"';
+                    }
+                    ?>
+                    <?php // Product Image ?>
+                    <?php /*<a href="<?php /* @escapeNotVerified * / echo $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
+                        <?php echo $productImage->toHtml(); ?>
+                    </a>  */ ?>
+                    <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_product->getName(); ?>" class="product photo product-item-photo" tabindex="-1">
+                    <span style="width:719px;" class="product-image-container">
+                    <span style="padding-bottom: 85.33%;" class="product-image-wrapper">
+                    <?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                    $product = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());        
+                    $images = $product->getMediaGalleryImages();  $imgCNT = 1; $imgurl2 = 1;
+					$iseditorail =0;
+					if($request->getFullActionName()!='catalogsearch_result_index'){
+					if($iterator==9 || $iterator==24  && $_category->getMylayout() == 2){
+					if($product->getEditorialImage() != '' && $product->getEditorialImage() != 'no_selection'){
+					
+					//echo 'kkk:'.$this->getBaseUrl()."media/catalog/product".$product->getEditorialImage();
+					list($width, $height) = getimagesize($this->getBaseUrl()."media/catalog/product".$product->getEditorialImage());
+					//echo "width: " . $width . "<br />";
+					//echo "height: " .  $height;
+						$iseditorail =1;
+						if($width>$height){
+						
+						$rasio = $height/$width;
+						$rasio = $rasio*1370;
+						
+						$editorial = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->constrainOnly(true)->keepAspectRatio(true)->keepFrame(true)->setImageFile($product->getEditorialImage())->resize(1436, 1124)->getUrl();
+						}else{
+						
+						$rasio1 = $width/$height;
+						$rasio1 = $rasio1*1370;
+						$editorial = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->constrainOnly(true)->keepAspectRatio(true)->keepFrame(true)->setImageFile($product->getEditorialImage())->resize(1436, $rasio1)->getUrl();
+						}
+						//$editorial = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(false)->keepFrame(false)->setImageFile($product->getEditorialImage())->resize(1370, 1071)->getUrl();
+						//$this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->setImageFile($product->getEditorialImage())->getUrl(); // $block->getUrl('media/catalog').'product'.$product->getHoverImage();
+					}
+					}
+					}
+					
+                    foreach($images as $child){
+					$imgurl1 = '';
+                    if($imgCNT==1)  {
+					
+					if($request->getFullActionName()=='catalogsearch_result_index'){
+					$imgurl1= $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->constrainOnly(true)->keepAspectRatio(true)->keepFrame(true)->setImageFile($product->getHoverImage())->resize(688, 538)->getUrl();
+					//$this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->setImageFile($child->getFile())->resize(688, 538)->getUrl();
+					}else{
+					$imgurl1= $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->setImageFile($child->getFile())->resize(1012, 864)->getUrl();
+					}
+					$imgurl2 =$imgurl1;
+					
+					}
+                    elseif($imgCNT==2)  {
+						
+					if($product->getHoverImage() != '' && $product->getHoverImage() != 'no_selection'){
+					if($product->getEditorialImage() != '' && $product->getEditorialImage() != 'no_selection'){
+					if($iterator==9 || $iterator==24){
+					list($width2, $height2) = getimagesize($this->getBaseUrl()."media/catalog/product".$product->getHoverImage());
+					if($width2>$height2){
+					$rasio2 = $height2/$width2;
+					$rasio2 = $rasio2*1370;
+					$imgurl2 = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->constrainOnly(true)->keepAspectRatio(true)->keepFrame(true)->setImageFile($product->getHoverImage())->resize(1436, 1124)->getUrl();
+					}else{
+					$rasio2_2 = $width2/$height2;
+					$rasio2_2 = $rasio2_2*1370;
+					$imgurl2 = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->constrainOnly(true)->keepAspectRatio(true)->keepFrame(true)->setImageFile($product->getHoverImage())->resize(1436, $rasio2_2)->getUrl();
+					}
+						//$imgurl2 = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->setImageFile($product->getHoverImage())->resize(1370, 1071)->getUrl();
+						}else{
+						if($request->getFullActionName()!='catalogsearch_result_index'){
+						if($_category->getMylayout() == 1){
+						$imgurl2 = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->setImageFile($product->getHoverImage())->resize(1058, 828)->getUrl();
+						}else{
+						$imgurl2 = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->setImageFile($product->getHoverImage())->resize(688, 538)->getUrl();
+						}
+						}
+						}
+						}else{
+						
+						if($request->getFullActionName()!='catalogsearch_result_index'){
+						
+						if($_category->getMylayout() == 1){
+						$imgurl2 = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->setImageFile($product->getHoverImage())->resize(1058, 828)->getUrl();
+						}else{
+						$imgurl2 = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->setImageFile($product->getHoverImage())->resize(688, 538)->getUrl();
+						}
+						}
+						}
+						 // $block->getUrl('media/catalog').'product'.$product->getHoverImage();
+					}else{
+						if(count($images)>=2){
+						if($request->getFullActionName()=='catalogsearch_result_index'){
+							$imgurl2 =$this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->setImageFile($child->getFile())->resize(688, 538)->getUrl();
+						}else{
+							$imgurl2 =$this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->setImageFile($child->getFile())->resize(1058, 828)->getUrl();
+						
+						}
+						}else{
+							$imgurl2 =$imgurl1;
+						}
+					}
+					
+					//$child->getUrl();
+					 }
+                    else{break;}$imgCNT++;
+                    }
+                    
+					if($request->getFullActionName()=='catalogsearch_result_index'){
+										$imageUrl = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->resize(688, 538)->getUrl(); 
+					}else{
+					$imageUrl = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->resize(1012, 864)->getUrl(); 
+					}
+					if(isset($_category) && $_category->getMylayout() == 1){
+						
+						$imageUrl = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->resize(1058, 828)->getUrl(); 
+						if($imgurl2==1){
+						$imgurl2 = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->resize(1058, 828)->getUrl(); 		}
+						
+						
+					}else{
+					if($request->getFullActionName()!='catalogsearch_result_index'){
+						if($_category->getMylayout() == 1){
+						$imageUrl = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->resize(1058, 828)->getUrl(); 
+						if($imgurl2==1){
+						$imgurl2 = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->resize(1058, 828)->getUrl(); 		}
+						
+						}else{
+						
+						
+						$imageUrl = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->resize(688, 538)->getUrl(); 
+						if($imgurl2==1){
+						$imgurl2 = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'product_page_image_large')->keepAspectRatio(TRUE)->keepFrame(TRUE)->resize(688, 538)->getUrl(); 		}
+						
+						}
+					}	
+					
+					}
+					
+					
+					?>
+                    <img class="product-image-photo" alt="<?php echo $_product->getName(); ?>" src="<?php if(isset($editorial)){echo $editorial;}else{echo $imageUrl;}?>" onmouseover="this.src='<?php if($imgurl2){ echo $imgurl2;}else{echo $imageUrl;} ?>';" onmouseout="this.src='<?php if(isset($editorial)){echo $editorial;}else{echo $imageUrl;} ?>';"/>
+                    <div class="bl_black" ></div>
+                    </span></span></a>
+                    <?php unset($editorial);?>
+                    <?php 
+					//echo '<span style="display:none;">::::'.$_product->getData('show_sold_out').'</span>';
+					$productStockObj = $objectManager->get('Magento\CatalogInventory\Api\StockRegistryInterface')->getStockItem($_product->getId());
+					if ($productStockObj->getData('is_in_stock')==0 && $_product->getData('show_sold_out')==53) {
+						echo '<span class="sold-out-msg">sold out</span>';
+					} ?>
+                    <?php 
+					if($request->getFullActionName()=='catalogsearch_result_index'){ ?>
+                     <a class="weltpixel_quickview_button_v2 weltpixel-quickview" data-quickview-url="<?php echo $block->getUrl();?>weltpixel_quickview/catalog_product/view/id/<?php echo $_product->getId(); ?>/" href="javascript:void(0);"><span><?php echo __('Quick View') ?></span></a>
+                     <?php } ?>
+                    <div class="product details product-item-details">
+                        <?php
+                            $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                        ?>
+                        <div class="mypro-sku" style="display: none;"><?php echo $_product->getSku(); ?></div>
+                        <strong class="product name product-item-name">
+                            <a class="product-item-link" title="<?php echo $_product->getName(); ?>"
+                               href="<?php /* @escapeNotVerified */ echo $_product->getProductUrl() ?>">
+                                <?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>
+                            </a>
+                        </strong>
+                        <?php echo $block->getReviewsSummaryHtml($_product, $templateType); ?>
+                         <?php echo '<div style="display:none">'.$block->getProductPrice($_product).'</div>'; ?>
+						<?php 
+                        // price setting start                      
+                        $options = array();
+                        $color = array();
+
+                        $min_price = 111111111111;
+                        $max_price = 0;
+						
+						$special_min_price = 111111111111;
+                        $special_max_price = 0;						
+						
+                        if($_product->getTypeId() == 'grouped' ){
+                        //echo '<pre>';
+                            $_associated_products = $_product->getTypeInstance(true)->getAssociatedProducts($_product);
+                            foreach( $_associated_products as $_associated_product ) {
+                                
+                                //$min_price[] = $_associated_product->getPrice();
+                                if($min_price > $_associated_product->getPrice()){
+                                $min_price = $_associated_product->getPrice();
+								$special_min_price = $_associated_product->getFinalPrice();
+                                } 
+                                
+                                if($max_price < $_associated_product->getPrice()){
+                                $max_price = $_associated_product->getPrice();
+								$special_max_price = $_associated_product->getFinalPrice();
+                                }
+                                
+                            }
+                            
+                        }
+						
+						
+						if($_product->getTypeId() == 'configurable' ){
+							$repository = $objectManager->create('Magento\Catalog\Model\ProductRepository');
+							$data = $_product->getTypeInstance()->getConfigurableOptions($_product);
+							
+							
+							foreach($data as $attr){
+							  foreach($attr as $p){
+								$options[$p['sku']][$p['attribute_code']] = $p['option_title'];
+							  }
+							}
+						
+							foreach($options as $sku =>$d){
+							  $pr = $repository->get($sku); 
+							  foreach($d as $k => $v){ 
+								
+								if($k == 'color'){ 
+								$color[] = $v; 
+								}
+								
+								}
+							  //echo ' : '.$pr->getPrice()."\n";
+								if($min_price > $pr->getPrice()){
+									$min_price = $pr->getPrice();
+									$special_min_price =  $pr->getFinalPrice();									
+								}
+							}
+						 }
+						 
+						 
+						
+						if($min_price != 111111111111){
+							if($_product->getTypeId() == 'grouped' ){
+								echo "<div class='price-box price-final_price'>";
+								if($special_min_price>0 && $min_price != $special_min_price){
+								echo "<div class='old-price'>";
+								}
+								echo "<span class='mini-price price'>".str_replace('.00', '',$priceHelper->currency($min_price, true, false))."</span>"; 						
+								if($min_price != $max_price && $special_min_price != $special_max_price){
+								echo "<span class='max-price price'> - ".str_replace('.00', '',$priceHelper->currency($max_price, true, false))."</span>"; 
+								}
+								if($special_min_price>0 && $min_price != $special_min_price){
+								echo "</div>";
+								}
+								echo "</div>";
+								
+								if($special_min_price>0 && $min_price != $special_min_price){
+								echo "<div class='price-box price-final_price'><div class='special-price'><span class='mini-price price'>".str_replace('.00', '',$priceHelper->currency($special_min_price, true, false))."</span>"; 						
+								if($min_price != $max_price && $min_price != $special_min_price){
+								echo "<span class='max-price price'> - ".str_replace('.00', '',$priceHelper->currency($special_max_price, true, false))."</span>"; 
+								}
+								echo "</div></div>";
+								}
+								
+								unset($min_price);
+								unset($max_price);
+								unset($special_min_price);
+								unset($special_max_price);
+								
+							}else{
+								//echo "<span class='mini-price'>Starting at</span>".$priceHelper->currency($min_price, true, false); 
+								?>
+								<div class="price-box price-final_price" >
+								  <div class="price-box">
+									<p class="minimal-price"> <span class="price-label">Starting at</span> <span class="price-container tax weee" style=""> <span class="price-wrapper "> <span class="price"><?php echo str_replace('.00', '',$priceHelper->currency($min_price, true, false)); ?></span> </span> </span> </p>
+								  </div>
+								</div>
+		
+								<?php 
+							}
+							
+					  }
+			  
+                        // price setting end
+                        ?>
+                        
+                        
+                        <?php /* @escapeNotVerified */ 
+						//echo $_product->getTypeId();
+						if($_product->getTypeId() == 'grouped'){
+						
+						}else if($_product->getTypeId() == 'configurable' ){
+						
+						}else{
+							if($_product->getRelatedProducts()){
+							$relatedProducts = $_product->getRelatedProducts();
+							$rel_pro_price = '';
+							foreach ($relatedProducts as $relatedProduct) {
+								$_prod_uct = $objectManager->create('Magento\Catalog\Model\Product')->load($relatedProduct->getId());
+								
+								if($_prod_uct->getSpecialPrice()){
+									$rel_pro_price = $_prod_uct->getSpecialPrice();
+								}else{
+									$rel_pro_price = $_prod_uct->getPrice();
+								}
+							}
+							
+								$cstm_opt_fabric_prc = array();
+								$cstm_opt_nonfabric_prc = array();
+								$remove = array(0);
+								if(!empty($relatedProducts)){
+								$customOptions = $objectManager->get('Magento\Catalog\Model\Product\Option')->getProductOptionCollection($_product);
+								if(!empty($customOptions)){
+								foreach ($customOptions as $customOption) {
+									if(strpos($customOption->getData('default_title'), 'abric') !== false) {
+										$values = $customOption->getValues();
+										foreach ($values as $value) {	
+										if($value->getData('price')>0){							
+										$cstm_opt_fabric_prc[] = $value->getData('price');
+										}
+									}
+									}else{
+										$values = $customOption->getValues();
+										if($values){
+										foreach ($values as $value) {	
+										if($value->getData('price')>0){							
+										$cstm_opt_nonfabric_prc[] = $value->getData('price');
+										}
+									}
+									}
+									}
+									
+								}
+								
+									//$cstm_opt_fabric_prc[] = $rel_pro_price;
+									//$cstm_opt_nonfabric_prc[] = $rel_pro_price;
+								}
+								}
+								
+									$fmin = 0; $fmax=0; $nonfmax=0;
+									if(isset($cstm_opt_fabric_prc[0])){
+									$fmin = $cstm_opt_fabric_prc[0];
+									foreach($cstm_opt_fabric_prc as $key => $val){
+										if($fmin > $val){
+											$fmin = $val;
+										}
+									}
+									
+									$fmax = $cstm_opt_fabric_prc[0];
+ 									foreach($cstm_opt_fabric_prc as $key => $val){
+										if($fmax < $val){
+											$fmax = $val;
+										}
+									}
+									}
+									if(isset($cstm_opt_nonfabric_prc[0])){
+									$nonfmax = $cstm_opt_nonfabric_prc[0];
+ 									foreach($cstm_opt_nonfabric_prc as $key => $val){
+										if($nonfmax < $val){
+											$nonfmax = $val;
+										}
+									}	
+									}
+
+	
+									
+									$minopt_price = $fmin;									
+									$discount_percent = $cus_pro_dis;
+									$min_pri_ce = $minopt_price*$discount_percent/100;
+									$min_p_rice = $minopt_price-$min_pri_ce;
+									
+									$maxopt_price = $fmax + $nonfmax;
+									$max_pri_ce = $maxopt_price*$discount_percent/100;
+									$max_p_rice = $maxopt_price-$max_pri_ce;
+									
+									if($min_p_rice > $rel_pro_price){
+										$min_p_rice = $_prod_uct->getSpecialPrice();
+										$minopt_price = $_prod_uct->getPrice();
+									}
+									
+									$class_customoption = '';
+									if($cus_pro_dis || $_prod_uct->getSpecialPrice()){
+										$class_customoption = ' l_optprc ';
+									}
+									
+									
+									echo "<div class='price-box price-final_price ".$class_customoption."'><span class='mini-price'>".str_replace('.00', '',$priceHelper->currency($minopt_price, true, false))."</span>"; 
+									
+									
+									echo "<span class='max-price'> - ".str_replace('.00', '',$priceHelper->currency($maxopt_price, true, false))."</span></div>"; 
+									if($cus_pro_dis || $_prod_uct->getSpecialPrice()){
+									echo "<div class='price-box price-final_price'><div class='special-price'><span class='mini-price price'>".str_replace('.00', '',$priceHelper->currency($min_p_rice, true, false))."</span><span class='max-price price'> - ".str_replace('.00', '',$priceHelper->currency($max_p_rice, true, false))."</span></div></div>";
+									}
+									
+									unset($minopt_price);
+									unset($maxopt_price);
+									
+								
+
+							}else{
+								
+								echo $amount = str_replace('.00', '',$block->getProductPrice($_product));
+							}
+						}
+						
+						/*if($_product->getTypeId() == 'simple' ){
+						echo $block->getProductPrice($_product);
+						}*/?>
+                        <?php echo $block->getProductDetailsHtml($_product); ?>
+						<?php 
+						if($_product->getRelatedProducts()){
+						echo '<div class="available_coption">custom options available</div>';						
+						}
+						?> 
+                        <div class="product-item-inner">
+                            <div class="product actions product-item-actions"<?php echo strpos($pos, $viewMode . '-actions') ? $position : ''; ?>>
+                                <div class="actions-primary"<?php echo strpos($pos, $viewMode . '-primary') ? $position : ''; ?>>
+                                    <?php if ($_product->isSaleable()): ?>
+                                        <?php $postParams = $block->getAddToCartPostParams($_product); ?>
+                                        <form data-role="tocart-form" action="<?php /* @escapeNotVerified */ echo $postParams['action']; ?>" method="post">
+                                            <input type="hidden" name="product" value="<?php /* @escapeNotVerified */ echo $postParams['data']['product']; ?>">
+                                            <input type="hidden" name="<?php /* @escapeNotVerified */ echo Action::PARAM_NAME_URL_ENCODED; ?>" value="<?php /* @escapeNotVerified */ echo $postParams['data'][Action::PARAM_NAME_URL_ENCODED]; ?>">
+                                            <?php echo $block->getBlockHtml('formkey')?>
+                                            <button type="submit"
+                                                    title="<?php echo $block->escapeHtml(__('Add to Cart')); ?>"
+                                                    class="action tocart primary">
+                                                <span><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
+                                            </button>
+                                        </form>
+                                    <?php else: ?>
+                                        <?php if ($_product->getIsSalable()): ?>
+                                            <div class="stock available"><span><?php /* @escapeNotVerified */ echo __('In stock') ?></span></div>
+                                        <?php else: ?>
+                                            <div class="stock unavailable"><span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span></div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                                <div data-role="add-to-links" class="actions-secondary"<?php echo strpos($pos, $viewMode . '-secondary') ? $position : ''; ?>>
+                                    <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
+                                        <?php echo $addToBlock->setProduct($_product)->getChildHtml(); ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <?php if ($showDescription):?>
+                                <div class="product description product-item-description">
+                                    <?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                    <a href="<?php /* @escapeNotVerified */ echo $_product->getProductUrl() ?>" title="<?php /* @escapeNotVerified */ echo $_productNameStripped ?>"
+                                       class="action more"><?php /* @escapeNotVerified */ echo __('Learn More') ?></a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php echo($iterator == count($_productCollection)+1) ? '</li>' : '' ?>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+    <?php 
+	//echo count($_productCollection);
+	if(count($_productCollection) >= 30 ){ ?>
+        <div class="load-more-items-btn"><span>Load More Items</span></div>
+        <div class="loading-img" style="display:none">&nbsp;</div>
+    <?php } ?>
+    <?php // echo $block->getToolbarHtml() ?>
+    <?php if (!$block->isRedirectToCartEnabled()) : ?>
+        <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form], .form.map.checkout": {
+                "catalogAddToCart": {}
+            }
+        }
+        </script>
+    <?php endif; ?>
+<?php endif; ?>
+
+<script type="text/javascript">
+require(['jquery', 'jquery/ui'], function($){
+$( document ).ajaxComplete(function() {  
+
+	$('div.swatch-attribute.color').each(function(){
+		$(this).parent().find('div.available_color').html('Available in '+$('div.swatch-option', $(this)).length+' Colors');
+		$(this).parent().parent().find('div.available_color').html('Available in '+$('div.swatch-option', $(this)).length+' Colors');
+	});
+
+});
+
+	if (navigator.userAgent.indexOf('Mac OS X') != -1) {
+	  jQuery("body").addClass("mac");
+	} else {
+	  jQuery("body").addClass("pc");
+	}
+
+});
+
+/*
+require([
+	   'Magento_Customer/js/customer-data'
+	], function (customerData) {
+		var sections = ['cart'];
+		customerData.invalidate(sections);
+		customerData.reload(sections, true);
+	});
+		*/
+</script>

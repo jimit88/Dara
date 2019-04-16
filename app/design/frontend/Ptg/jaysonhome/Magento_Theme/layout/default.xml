@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+	<referenceBlock name="head.components">
+            <block class="Magento\Framework\View\Element\Js\Components" name="newsletter_head_components" template="Magento_Newsletter::js/components.phtml"/>
+        </referenceBlock>
+        <referenceContainer name="header.panel">
+		
+		
+			<referenceBlock name="register-link" remove="true" />
+        </referenceContainer>
+		<referenceBlock name="header.links">
+		 
+		<block class="Magento\Framework\View\Element\Html\Link" name="help.link" before="-">
+           <arguments>
+                  <!--  <argument name="label" xsi:type="string" translate="false">help</argument>
+                    <argument name="path" xsi:type="string" translate="false">help</argument>-->
+                </arguments>
+        </block>
+			 
+		</referenceBlock>
+		<move element="breadcrumbs" destination="page.wrapper" before="main.content"/>
+		<move element="header.links" destination="header-wrapper" before="top.search"/>
+		<move element="navigation.sections" destination="header-wrapper"/>
+		
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logo_img_width" xsi:type="number">148</argument>
+                <argument name="logo_img_height" xsi:type="number">43</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceContainer name="footer">
+            <container name="footer_nl_sm" as="footer_nl_sm" label="Page Footer_nl_sm" htmlTag="div" htmlClass="footer nl-sm">
+				
+				 <block class="Magento\Newsletter\Block\Subscribe" name="form.subscribe" as="subscribe" before="-" template="subscribe.phtml"/>
+				<block class="Magento\Cms\Block\Block" name="footer_social_links_block">
+					<arguments>
+						<argument name="block_id" xsi:type="string" translate="true">footer_social_links</argument>
+					</arguments>
+           		 </block>
+				 </container>
+				 <container name="footer_link" as="footer_link" label="Page Footer_link" htmlTag="div" htmlClass="footer ftr-second-row">
+				 <block class="Magento\Cms\Block\Block" name="footer_right_contact">
+					<arguments>
+						<argument name="block_id" xsi:type="string" translate="true">footer_right_contact</argument>
+					</arguments>
+           		 </block>
+				<block class="Magento\Cms\Block\Block" name="ftr-links">
+					<arguments>
+						<argument name="block_id" xsi:type="string" translate="true">ftr-links</argument>
+					</arguments>
+           		 </block>
+				 
+				 </container>
+			<referenceBlock name="footer_links" remove="true"/>
+        </referenceContainer>
+        <referenceBlock name="report.bugs" remove="true"/>
+    </body>
+</page>

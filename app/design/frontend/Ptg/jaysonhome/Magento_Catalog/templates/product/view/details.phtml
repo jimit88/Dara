@@ -1,0 +1,252 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):?>
+    <div class="product info detailed">
+        <?php $layout = $block->getLayout(); ?>
+        <div class="product data items" data-mage-init='{"tabs":{"openedState":"active"}}'>
+            <?php foreach ($detailedInfoGroup as $name):?>
+                <?php
+                    $html = $layout->renderElement($name);
+                    if (!trim($html)) {
+                        continue;
+                    }
+                    $alias = $layout->getElementAlias($name);
+                    $label = $block->getChildData($alias, 'title');
+                ?>
+                <div class="data item title"
+                     aria-labeledby="tab-label-<?php /* @escapeNotVerified */ echo $alias;?>-title"
+                     data-role="collapsible" id="tab-label-<?php /* @escapeNotVerified */ echo $alias;?>">
+                    <a class="data switch"
+                       tabindex="-1"
+                       data-toggle="switch"
+                       href="#<?php /* @escapeNotVerified */ echo $alias; ?>"
+                       id="tab-label-<?php /* @escapeNotVerified */ echo $alias;?>-title">
+                        <?php /* @escapeNotVerified */ echo $label; ?>
+                    </a>
+                </div>
+                <div class="data item content" id="<?php /* @escapeNotVerified */ echo $alias; ?>" data-role="content">
+                    <?php /* @escapeNotVerified */ echo $html; ?>
+                </div>
+            <?php endforeach;?>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');//get current product
+
+$tabcontent = '';
+if($product->getTabDetails() == '' && $product->getTabCare() == ''){
+$tabcontent = ' pro-desc';
+}
+
+$tabfullhight = '';
+if($product->getTabDetails() == '' || $product->getTabCare() == ''){
+$tabfullhight = ' dc-tab-full-height';
+}
+if($product->getDescription()){
+?>
+<div class="custom-des-area expandDiv <?php echo $tabcontent; ?>">
+<div class="pdp-des-detail-area">
+<div class="pdp-des-detail-left-area">
+<h3>DESCRIPTION</h3>
+<?php echo nl2br($product->getDescription()); ?>
+</div>
+<div class="pdp-des-detail-right-area ">
+<?php if($product->getTabDetails()){ ?>
+<div class="pdp-des-detail-right-box details">
+<h4>details</h4>
+<div class="tab-cr <?php echo $tabfullhight; ?>">
+<?php echo nl2br($product->getTabDetails()); ?>
+</div>
+</div>
+<?php } ?>
+<?php if($product->getTabCare()){ ?>
+<div class="pdp-des-detail-right-box care">
+<h4>care</h4>
+<div class="tab-cr <?php echo $tabfullhight; ?>">
+<?php echo nl2br($product->getTabCare()); ?>
+</div>
+</div>
+<?php } ?>
+</div>
+<span id="showless" style="display:none;">Read Less</span>
+</div>
+</div>
+
+<?php } ?>
+
+
+<?php 
+/*echo $product->getDescription();
+echo $product->getTabCare();
+echo $product->getTabDetails();
+*/
+?>
+<?php 
+    //echo $product->getId();
+    //echo $product->getName();
+	
+	
+    //$_helper = $this->helper('Magento\Catalog\Helper\Output');
+    //$product = $block->getProduct();
+	$content = $product->getData('custom_desc_content_1');
+	$pt = \Magento\Framework\App\ObjectManager::getInstance();
+	$filterManager = $pt->get('Magento\Cms\Model\Template\FilterProvider')->getPageFilter()->filter($content);
+	echo $filterManager;
+	
+	
+	$product_shipping_delivery = $product->getData('product_shipping_delivery');
+	echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId($product_shipping_delivery)->toHtml();
+	
+?>
+<script type="text/javascript">
+require(['jquery'],function($){
+	var windowWidth = jQuery(window).width();
+		if(windowWidth < 768){
+		
+		var showChar = 300;
+	
+	// first desciption
+	/*var content = jQuery('div.pdp-des-detail-area').html();
+    var c = content.substr(0, showChar);
+	c = c.substr(0, Math.min(c.length, c.lastIndexOf(" ")));
+	var ht_ml = c + '<span id="showmore">  &nbsp;Read More</span>';
+	jQuery('div.pdp-des-detail-area').html(ht_ml);	
+	var full_content = content ;	
+	
+	jQuery(document).on("click", 'span#showmore', function ($e) {
+	  console.log('more ffffff click');
+		jQuery('div.pdp-des-detail-area').html(full_content);		
+		jQuery('span#showless').show();
+	} );
+	
+	jQuery(document).on("click", 'span#showless', function ($e) {
+	  console.log('less click');
+		jQuery('div.pdp-des-detail-area').html(ht_ml);		
+		jQuery('span#showless').hide();
+	} );
+	
+	// last desciption
+	/*var content = jQuery('.pdp-des-detail-area:last').html();
+    var c = content.substr(0, showChar);
+	c = c.substr(0, Math.min(c.length, c.lastIndexOf(" ")));
+	var html = c + '<span id="showmore2">  &nbsp;Read More</span>';
+	jQuery('.pdp-des-detail-area:last').html(html);	
+	var full_content = content ;	
+	
+	jQuery(document).on("click", 'span#showmore2', function ($e) {
+		jQuery('.pdp-des-detail-area:last').html(full_content);		
+		jQuery('span#showless2').show();
+	} );
+	
+	jQuery(document).on("click", 'span#showless2', function ($e) {
+		jQuery('.pdp-des-detail-area:last').html(html);		
+		jQuery('span#showless2').hide();
+	} );*/
+		
+		/*		
+
+		var showChar = 300;
+		var ellipsestext = "...";
+		var moretext = "Read More";
+		var lesstext = "Read Less";
+		jQuery('.pdp-des-detail-left-area').each(function() {
+		  var content = jQuery(this).html();
+		  var textcontent = jQuery(this).text();
+	
+		  if (textcontent.length > showChar) {
+	
+			var c = textcontent.substr(0, showChar);
+			//var h = content.substr(showChar-1, content.length - showChar);
+	
+			var html = '<span class="container"><span>' + c + '</span>' + '<span class="moreelipses">' + ellipsestext + '</span></span><span class="morecontent">' + content + '</span>';
+	
+			jQuery(this).html(html);
+			jQuery(this).after('<a href="" class="morelink">' + moretext + '</a>');
+		  }
+	
+		});
+	
+		jQuery(".morelink").click(function() {
+		  if (jQuery(this).hasClass("less")) {
+			jQuery(this).removeClass("less");
+			jQuery(this).html(moretext);
+			jQuery(this).prev().children('.morecontent').toggle(300, function(){
+			  jQuery(this).prev().toggle(300);
+			});
+		   
+		  } else {
+			jQuery(this).addClass("less");
+			jQuery(this).html(lesstext);
+			jQuery(this).prev().children('.container').toggle(300, function(){
+			  jQuery(this).next().toggle(300);
+			});
+		  }      
+		  
+		  return false;
+		});
+		jQuery('.pdp-des-detail-right-area').hide();
+		jQuery('.morelink').click(function(){
+			jQuery('.pdp-des-detail-right-area').toggle();
+		});
+	*/}
+	
+	/////start dynamic highe for description
+	var left_des_height = jQuery('div.pdp-des-detail-left-area').height();
+	
+	if(jQuery('div.pdp-des-detail-right-box.care').length && jQuery('div.tab-cr.dc-tab-full-height').length){
+		left_des_height = left_des_height-38;
+		jQuery('div.tab-cr.dc-tab-full-height').css('max-height',left_des_height);	
+	}else if(jQuery('div.pdp-des-detail-right-box.care').length && jQuery('div.pdp-des-detail-right-box.details').length){
+		
+		var right_des_height = jQuery('div.pdp-des-detail-right-area').height();
+		if(right_des_height > left_des_height){
+			left_des_height = left_des_height-116;
+			left_des_height = left_des_height/2;
+			jQuery('div.tab-cr').each(function(){
+				jQuery(this).css('max-height',left_des_height);
+			});
+		}		
+	}
+	
+	
+	if(jQuery('div.tab-cr.dc-tab-full-height').length){
+		left_des_height = left_des_height-38;
+		jQuery('div.tab-cr.dc-tab-full-height').css('max-height',left_des_height);
+	}
+	/////end dynamic highe for description
+	
+});	
+
+/*
+require([
+	   'Magento_Customer/js/customer-data'
+	], function (customerData) {
+		var sections = ['cart'];
+		customerData.invalidate(sections);
+		customerData.reload(sections, true);
+	});
+	*/	
+		
+</script>
+<style>
+.morecontent {
+  display: none;
+}
+</style>
+<script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form], .form.map.checkout": {
+                "catalogAddToCart": {}
+            }
+        }
+</script>

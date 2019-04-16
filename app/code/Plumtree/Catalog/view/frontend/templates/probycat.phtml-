@@ -1,0 +1,22 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');//get current product
+// echo $product->getId();
+//echo $product->getName();
+
+
+
+$categoryId = 5; // fetching products in category id 6
+$categoryProducts = $block->getCategoryProducts($categoryId);
+foreach ($categoryProducts as $cproduct) {
+//print_r($cproduct->getData());
+// printing category name and url
+echo $cproduct->getName() . ' - ' . $cproduct->getProductUrl() . '<br />';
+	/*if (strpos($cproduct->getName(), $product->getName()) !== false && $product->getId() != $cproduct->getId()) {
+		echo "<input type='checkbox' name='".$product->getName()."' value=''  /> customize";
+	}*/
+	if( $cproduct->getSku() == "Alma Chair [Custom]" && $product->getSku() != "Alma Chair [Custom]" ){
+		echo "<input type='checkbox' name='".$product->getName()."' value=''  /> customize";
+	}
+}
+?>

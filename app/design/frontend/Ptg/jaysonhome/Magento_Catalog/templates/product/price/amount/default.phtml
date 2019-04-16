@@ -1,0 +1,68 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php /** @var \Magento\Framework\Pricing\Render\Amount $block */ ?>
+<?php 
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$variable = $objectManager->create('Magento\Variable\Model\Variable');
+$cus_pro_dis = $variable->loadByCode('cus_pro_dis')->getPlainValue();
+$classass = '';
+if($cus_pro_dis){
+$classass = ' prc_swch_pink ';
+}
+
+$request = $objectManager->get('\Magento\Framework\App\Request\Http');
+if($request->getFullActionName()=='catalog_product_view'){
+echo '<span class="new-start old-price"></span>';
+}
+?>
+
+<span class="price-container <?php echo $classass; ?> <?php /* @escapeNotVerified */ echo $block->getAdjustmentCssClasses() ?>"
+        <?php echo $block->getSchema() ? ' itemprop="offers" itemscope itemtype="http://schema.org/Offer"' : '' ?>">
+    <?php if ($block->getDisplayLabel()): ?>
+        <span class="price-label"><?php /* @escapeNotVerified */ echo $block->getDisplayLabel(); ?></span>
+    <?php endif; ?>
+    <span <?php if ($block->getPriceId()): ?> id="<?php /* @escapeNotVerified */ echo $block->getPriceId() ?>"<?php endif;?>
+        <?php echo($block->getPriceDisplayLabel()) ? 'data-label="' . $block->getPriceDisplayLabel() . $block->getPriceDisplayInclExclTaxes() . '"' : '' ?>
+        data-price-amount="<?php /* @escapeNotVerified */ echo $block->getDisplayValue(); ?>"
+        data-price-type="<?php /* @escapeNotVerified */ echo $block->getPriceType(); ?>"
+        class="price-wrapper <?php /* @escapeNotVerified */ echo $block->getPriceWrapperCss(); ?>"
+        <?php echo $block->getSchema() ? ' itemprop="price"' : '' ?>>
+        <?php /* @escapeNotVerified */ echo $block->formatCurrency($block->getDisplayValue(), (bool)$block->getIncludeContainer(),0) ?>
+    </span>
+    <?php if ($block->hasAdjustmentsHtml()): ?>
+        <?php echo $block->getAdjustmentsHtml() ?>
+    <?php endif; ?>
+    <?php if ($block->getSchema()): ?>
+        <meta itemprop="priceCurrency" content="<?php /* @escapeNotVerified */ echo $block->getDisplayCurrencyCode()?>" />
+    <?php endif; ?>
+</span>
+
+
+
+<?php 
+/*$_product = $block->getProduct();
+var_dump($block->debug());
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->get('Magento\Catalog\Model\Product')->load(YOUR_ID);
+$bundleObj=$product->getPriceInfo()->getPrice('final_price');
+
+$finalPriceModel = $block->getPrice();
+echo $minimalPrice = $finalPriceModel->getMinimalPrice();
+echo '<br>'.$maximalPrice = $finalPriceModel->getMaximalPrice();
+
+$productId = $block->getSaleableItem()->getId();
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$_product = $_objectManager->get('\Magento\Catalog\Model\Product')->load($productId);
+$productTypeInstance = $_objectManager->get('Magento\ConfigurableProduct\Model\Product\Type\Configurable');
+$productAttributeOptions = $productTypeInstance->getConfigurableAttributesAsArray($_product);
+var_dump($productAttributeOptions);*/
+
+?>

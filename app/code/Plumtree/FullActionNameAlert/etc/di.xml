@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Framework\View\Element\Html\Links" type="Plumtree\FullActionNameAlert\Model\Framework\View\Element\Html\Links" />
+	<preference for="Magento\Checkout\Controller\Cart\Index" type="Plumtree\FullActionNameAlert\Controller\Cart\Index" />
+	<preference for="Magento\Checkout\Controller\Cart\Add" type="Plumtree\FullActionNameAlert\Controller\Cart\Add" />
+	<preference for="Magento\Catalog\Block\Product\View\Options\Type\Select" type="Plumtree\FullActionNameAlert\Block\Product\View\Options\Type\Select" />
+	<type name="Magento\Catalog\Model\Category\Attribute\Source\Mode">
+        <plugin name="WebkulCart" type="Plumtree\FullActionNameAlert\Plugin\Model\Category\Attribute\Source\Mode" sortOrder="1" />
+    </type>
+	<type name="Magento\Checkout\Model\DefaultConfigProvider">
+        <plugin name="AddAttPlug" type="Plumtree\FullActionNameAlert\Plugin\ConfigProviderPlugin" />
+    </type>
+	<preference for="Magento\Checkout\CustomerData\Cart"
+                 type="Plumtree\FullActionNameAlert\CustomerData\Cart" />
+				 
+	 <type name="Magento\Tax\Model\TaxConfigProvider">
+        <plugin name="tax_config_provider" type="Plumtree\FullActionNameAlert\Model\TaxConfigProvider" />
+    </type>
+	<!--<preference for="Magento\Customer\Model\Account\Redirect" type="Plumtree\FullActionNameAlert\Model\Account\Redirect" />-->
+	<preference for="Magento\Multishipping\Controller\Checkout\OverviewPost" type="Plumtree\FullActionNameAlert\Controller\Checkout\OverviewPost" />
+	<preference for="Magento\OfflineShipping\Model\Carrier\Flatrate" type="Plumtree\FullActionNameAlert\Model\Carrier\Flatrate" />
+	<preference for="Magento\Ups\Model\Carrier" type="Plumtree\FullActionNameAlert\Model\Carrier" />
+	<preference for="Magento\Quote\Model\Quote\Address" type="Plumtree\FullActionNameAlert\Model\Quote\Address" />
+	
+	<preference for="Magento\Directory\Model\ResourceModel\Region\Collection" type="Plumtree\FullActionNameAlert\Model\ResourceModel\Region\Collection" />
+	
+	<preference for="Magento\CatalogInventory\Model\StockStateProvider" type="Plumtree\FullActionNameAlert\Model\StockStateProvider" />
+	
+	<type name="Magento\Catalog\Block\Product\View\Gallery">
+	<plugin name="plumtree_fullActionNameAlert_product_view_gallery_plugin" type="Plumtree\FullActionNameAlert\Block\Product\View\Gallery\Plugin" sortOrder="10" />
+    </type>
+	
+	
+	<preference for="\Magento\Contact\Controller\Index\Post" type="Plumtree\FullActionNameAlert\Controller\Index\ExtendIndex" />
+	
+	<type name="Magento\Customer\Controller\Account\CreatePost">
+        <plugin name="sr_Customer_Account_CreatePost" type="Plumtree\FullActionNameAlert\Plugin\Customer\Account\CreatePost" sortOrder="1"/>
+    </type>
+	
+</config>

@@ -1,0 +1,51 @@
+<?php 
+$numbers =  $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
+$numbers = explode('/', $numbers);
+end($numbers);
+$lastNumber = prev($numbers);
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+//$prod_uct = $objectManager->get('Magento\Catalog\Model\Product')->load($lastNumber);
+$prod_uct = $objectManager->get('Magento\Framework\Registry')->registry('current_product');
+$store = $objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore(); 
+
+?>
+<div class="custom-pro-links" style="display:none;">
+<a href="<?php echo $prod_uct->getProductUrl(); ?>" target="_parent" class="custom-pro-btn" ><?php echo __('customize this piece'); ?></a>
+</div>
+
+<div class="box-gotoproduct" style="display:none;">
+    <div class="fieldset">
+        <div class="actions">
+            <a target="_parent" href="<?php echo $prod_uct->getProductUrl(); ?>" title="<?php echo __('view full product details'); ?>" class="action primary" >
+                <span><?php echo __('view full product details'); ?></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="social-buttons">
+	<span class="social-btn-heading"><?php echo __('Share this product:'); ?></span>
+    
+	<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5c7ee2e6df6421001143b411&product=inline-share-buttons' async='async'></script>
+    <div class="sharethis-inline-share-buttons"></div>
+   
+	<?php	      
+		$currentUrl = $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
+		$currentUrl1 = $block->getUrl();
+		$_product = $block->getProduct();
+		$facebook_share = ($block->showFacebookShare() > 0 ? 'true' : 'false');
+		$facebook_count = $block->getFacebookCount();
+		$google_count = $block->getGPlusCount();
+		
+    ?>
+    <?php if ($block->showDropbox()): ?>
+        <div class="houzz-main">
+        <a class="action houzz houzz-share-button" data-url="<?php echo $prod_uct->getProductUrl(); ?>" data-hzid="38334" data-title="<?php echo $prod_uct->getName(); ?>" data-img="<?php echo $store->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $prod_uct->getImage(); ?>" data-desc="<?php echo htmlspecialchars($prod_uct->getDescription()); ?>" data-category="Category keywords " data-showcount="1" href="https://www.houzz.com"><span><?php /* @escapeNotVerified */ echo __('&nbsp;') ?></span></a></div>
+
+<script>(function(d,s,id){if(!d.getElementById(id)){var js=d.createElement(s);js.id=id;js.async=true;js.src="//platform.houzz.com/js/widgets.js?"+(new Date().getTime());var ss=d.getElementsByTagName(s)[0];ss.parentNode.insertBefore(js,ss);}})(document,"script","houzzwidget-js");</script>
+
+
+    <?php endif; ?>
+</div>

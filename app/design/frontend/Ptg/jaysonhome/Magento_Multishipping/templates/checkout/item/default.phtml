@@ -1,0 +1,97 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+$product = $block->getProduct();
+
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+		$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+		$connection = $resource->getConnection();
+		$tableName = $resource->getTableName('quote_item'); 
+		$tableName_gift_message = $resource->getTableName('gift_message'); 
+		
+		$customerSession = $objectManager->create('Magento\Checkout\Model\Session');
+		$cart = $objectManager->get('\Magento\Checkout\Model\Cart'); 
+		//$quote = $block->getCheckoutSession()->getQuote();
+//echo $customerSession->getData('quote_id_1');
+
+$sql = "SELECT * FROM ".$tableName." WHERE quote_id=".$customerSession->getData('quote_id_1')." AND sku='".$product->getData('sku')."'";	
+$gift_result = $connection->fetchAll($sql);
+/*echo '<pre>';
+print_r($gift_result); 
+echo '</pre>';*/
+//echo '<br>----'.$gift_result[0]['gift_message_id']; 
+$gift_msg = '';
+if($gift_result){
+$sql_message_data = "SELECT * FROM ".$tableName_gift_message." WHERE gift_message_id='".$gift_result[0]['gift_message_id']."' ";
+$gift_msg = $connection->fetchAll($sql_message_data);
+}
+/*
+echo '<pre>';
+print_r($gift_msg);  
+echo '</pre>'; */
+?>
+
+
+    
+    
+    
+<div class="mult-ship-img"><img class="product-image-pho-to" src="<?php echo $block->getUrl('media/catalog').'product'.$product->getSmallImage(); ?>" alt="<?php echo $product->getName(); ?>" width="93"></div>
+          
+<strong class="product name product-item-name"><a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>"><?php echo $block->escapeHtml($block->getProductName()) ?></a></strong>
+<?php if ($_options = $block->getOptionList()): ?>
+    <dl class="item-options">
+        <?php foreach ($_options as $_option) : ?>
+            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+            <dt><?php echo $block->escapeHtml($_option['label']) ?></dt>
+            <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="tooltip wrapper"<?php endif; ?>>
+                <?php /* @escapeNotVerified */ echo $_formatedOptionValue['value'] ?>
+                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                    <dl class="item options tooltip content">
+                        <dt><?php echo $block->escapeHtml($_option['label']) ?></dt>
+                        <dd><?php /* @escapeNotVerified */ echo $_formatedOptionValue['full_view'] ?></dd>
+                    </dl>
+                <?php endif; ?>
+            </dd>
+        <?php endforeach; ?>
+    </dl>
+<?php endif; ?>
+<?php if ($addtInfoBlock = $block->getProductAdditionalInformationBlock()): ?>
+    <?php echo $addtInfoBlock->setItem($block->getItem())->toHtml() ?>
+<?php endif; ?>
+
+<?php 
+if($gift_msg){
+if($this->getRequest()->getActionName()=='addresses' || $this->getRequest()->getActionName()=='newShipping'){ ?> 
+<div  class="gift-options-cart-item">
+        
+<div class="cart-add-gift-message-area">
+    <span data-bind="i18n: 'gift message'">gift message</span>
+
+</div>
+
+    <div class="gift-content _active" >
+            <div class="gift-summary">
+                    <div class="gift-message-to">
+                        <span data-bind="i18n: 'To' + ':'">To:</span>
+                        <?php echo $gift_msg[0]['sender']; ?>
+                    </div>
+                    <div class="gift-message-from">
+                        <span data-bind="i18n: 'From' + ':'">From:</span>
+                        <?php echo $gift_msg[0]['recipient']; ?>
+                    </div>
+                    <div class="gift-message-summary">
+                        <span data-bind="i18n: 'Message' + ':'">Message:</span>
+                        <?php echo $gift_msg[0]['message']; ?>
+                    </div>
+            </div>    
+    </div>
+        
+</div>
+<?php  } 
+}?>

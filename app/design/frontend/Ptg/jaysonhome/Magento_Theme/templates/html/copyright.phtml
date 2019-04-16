@@ -1,0 +1,30 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<div class="ftr-last-row">
+<div class="footer-menu"><?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer-menu')->toHtml();?></div>
+<small class="copyright">
+    <span><?php /* @escapeNotVerified */ echo $block->getCopyright() ?></span>
+</small>
+<p ><a href="javascript:void(0)" id="back-to-top">Top</a></p>
+</div>
+
+<?php 
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+$request = $objectManager->get('\Magento\Framework\App\Request\Http');
+ 
+if($request->getFullActionName()!="checkout_index_index"){
+	
+	unset($_COOKIE['chk_1']);
+	setcookie('chk_1', '', time() - 3600, '/');
+	
+	unset($_COOKIE['user_e']);
+	setcookie('user_e', '', time() - 3600, '/');
+	
+	unset($_COOKIE['chk_psw_val']);
+	setcookie('chk_psw_val', '', time() - 3600, '/');
+}
+?>

@@ -1,0 +1,10 @@
+<?php 
+//$id = YOUR_PRODUCT_ID;
+$sku = 'Alma Chair [Custom]';
+//$_product = $block->getProductById($id);
+$_product = $block->getProductBySku($sku);
+echo $_product->getEntityId();
+echo 'dddddddddddd<br />';
+echo $_product->getName();
+
+?>

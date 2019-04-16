@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Plumtree_Complexgrd extension
+ *                     NOTICE OF LICENSE
+ * 
+ *                     This source file is subject to the Plumtree License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://www.plumtree.com/LICENSE.txt
+ * 
+ *                     @category  Plumtree
+ *                     @package   Plumtree_Complexgrd
+ *                     @copyright Copyright (c) 2016
+ *                     @license   https://www.plumtree.com/LICENSE.txt
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/layout_generic.xsd">
+    <container name="root" label="Root">
+        <block class="Plumtree\Complexgrd\Block\Adminhtml\Productattach\Edit\Tab\Products" name="complexgrd.edit.tab.products"/>
+    </container>
+</layout>

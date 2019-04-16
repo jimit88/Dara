@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        
+        <update id="Plumtree_Extensions::plumtreeextensions" title="Catalog Requests" module="Plumtree_RequestCatalog" sortOrder="300" resource="Plumtree_Extensions::plumtreeextensions"/>
+        <add id="Plumtree_RequestCatalog::requestcatalog" title="Manage Requests" module="Plumtree_RequestCatalog" sortOrder="50" parent="Plumtree_Extensions::plumtreeextensions" action="requestcatalog/index" resource="Plumtree_RequestCatalog::requestcatalog"/>
+        
+    </menu>
+</config>

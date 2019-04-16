@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <plumtree_customshipping>
+            <general>
+                <debug>0</debug>
+            </general>
+        </plumtree_customshipping>
+
+        <carriers>
+            <mpcustomshipping>
+                <active>0</active>
+                <sallowspecific>0</sallowspecific>
+                <price>0</price>
+                <model>Plumtree\Customshipping\Model\Carrier\Customshipping</model>
+                <name>Fixed</name>
+                <title>Pick Up in Store</title>
+                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+            </mpcustomshipping>
+        </carriers>
+
+    </default>
+</config>

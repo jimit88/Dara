@@ -1,0 +1,57 @@
+<div class="new-arrivals-section">
+<div class="nr-heading-area">
+<div class="nr-sub-title">New Arrivals</div>
+<div class="nr-rgt-btn-link"> <a href="javascrip:void(0);">Shop All New Arrivals</a></div>
+</div>
+
+
+<?php 
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();        
+ 
+$appState = $objectManager->get('\Magento\Framework\App\State');
+//$appState->setAreaCode('frontend');
+ 
+$categoryFactory = $objectManager->get('\Magento\Catalog\Model\CategoryFactory');
+$categoryHelper = $objectManager->get('\Magento\Catalog\Helper\Category');
+$categoryRepository = $objectManager->get('\Magento\Catalog\Model\CategoryRepository');
+ 
+$categoryId = 12; // YOUR CATEGORY ID
+$category = $categoryFactory->create()->load($categoryId);
+ 
+$categoryProducts = $category->getProductCollection()->addAttributeToSelect('*');
+$categoryProducts->setPageSize(3);
+
+$priceHelper = $objectManager->create('Magento\Framework\Pricing\Helper\Data');
+                             
+foreach ($categoryProducts as $product) {
+    //print_r($product->getData());
+	/*
+$images = $product->getMediaGalleryImages();
+$image = $images->getFirstItem();
+echo $imageUrl = $image->getFile();*/
+//$blockObj= $block->getLayout()->createBlock('Plumtree\Catalog\Block\Product\View');
+//echo $blockObj->resize($product->getSmallImage(),500,400);
+
+//echo $block->resize($product->getSmallImage(),500,400);
+//$_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+//echo $_imagehelper->init($product->getSmallImage(), 'thumbnail')->keepAspectRatio(true)->resize('400', '400');
+
+
+   // $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+
+    //echo $productImage = $_imagehelper->init($product, 'thumbnail')->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(400)->getUrl();
+
+
+
+echo "<img src=".$block->getUrl('pub/media/catalog').'product'.$product->getSmallImage()." />";
+echo '<br>';
+echo $product->getName();
+echo '<br>';
+echo $priceHelper->currency($product->getPrice(), true, false);
+
+
+    // printing category name and url
+    //echo $product->getName() . ' - ' . $product->getProductUrl() . '<br />';
+}
+?>
+</div>

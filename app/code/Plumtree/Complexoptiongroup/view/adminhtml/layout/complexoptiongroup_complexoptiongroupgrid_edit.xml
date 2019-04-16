@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+     <update handle="editor"/>
+    <body>
+	   <referenceContainer name="content">
+            <block class="Plumtree\Complexoptiongroup\Block\Adminhtml\Complexoptiongroup\Edit" name="complexoptiongroup_complexoptiongroup_edit"/>
+        </referenceContainer>
+		 <referenceContainer name="left">
+            <block class="Plumtree\Complexoptiongroup\Block\Adminhtml\Complexoptiongroup\Edit\Tabs" name="complexoptiongroup_complexoptiongroup_edit_tabs">
+				<block class="Plumtree\Complexoptiongroup\Block\Adminhtml\Complexoptiongroup\Edit\Tab\Complexoptiongroup" name="complexoptiongroup_complexoptiongroup_edit_tab_complexoptiongroup"/>
+				 <action method="addTab">
+                    <argument name="name" xsi:type="string">complexoptiongroup_section</argument>
+                    <argument name="block" xsi:type="string">complexoptiongroup_complexoptiongroup_edit_tab_complexoptiongroup</argument>
+                </action>
+				<!--CedAddTab-->
+			</block>
+        </referenceContainer>
+    </body>
+</page>

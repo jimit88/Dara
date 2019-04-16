@@ -1,0 +1,226 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+
+<?php 
+/*$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $_objectManager->get('\Magento\Catalog\Model\Product')->load('2');
+$customOptions = $_objectManager->get('Magento\Catalog\Model\Product\Option')->getProductOptionCollection($product);
+foreach ($customOptions as $o) {
+    foreach ($o->getValues() as $value) {
+        print_r($value->getData());
+    }
+}*/
+?>
+<?php $_product = $block->getProduct(); ?>
+
+<?php 
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$produ_cts = $_product->getTypeInstance(true)->getAssociatedProducts($_product);
+
+	$allchild_saleable = 0;
+    if($_product->getTypeId() == "grouped"):
+	
+		
+            foreach($produ_cts as $p):
+				$productSimple = $_objectManager->get('\Magento\Catalog\Model\Product')->load($p->getId());
+				//echo '<br>id:'.$p->getId();
+				
+				$productStockObj = $_objectManager->get('Magento\CatalogInventory\Api\StockRegistryInterface')->getStockItem($p->getId());
+				/*echo '<pre>';
+				print_r($productStockObj->getData('is_in_stock'));
+				echo '</pre>';*/
+
+			/*if ($productSimple->isSaleable()){
+					$allchild_saleable = 1;
+				}*/
+
+				if ($productStockObj->getData('is_in_stock')!=0){
+					$allchild_saleable = 1;
+				}
+            endforeach;
+    endif;
+?>
+<?php $buttonTitle = __('Add to Bag'); ?>
+
+<?php 
+if($_product->getTypeId() == "grouped" && $allchild_saleable == 1 ){ ?>
+<div class="box-tocart">
+    <div class="fieldset">
+        <?php if ($block->shouldRenderQuantity()): ?>
+        <div class="field qty">
+            <label class="label" for="qty"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label>
+            <div class="control">
+                <input type="number"
+                       name="qty"
+                       maxlength="12"
+                       value="<?php /* @escapeNotVerified */ echo $block->getProductDefaultQty() * 1 ?>"
+                       title="<?php /* @escapeNotVerified */ echo __('Qty') ?>" class="input-text qty"
+                       data-validate="<?php echo $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                       />
+            </div>
+        </div>
+        <?php endif; ?>
+        <div class="actions">
+            <button type="submit"
+                    title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                    class="action primary tocart"
+                    id="product-addtocart-button">
+                <span><?php /* @escapeNotVerified */ echo $buttonTitle ?></span>
+            </button>
+            
+            <button type="button" title="Select Options" class="scrolltodiv select-item action primary tocart" style="display:none;" ><span>Select Options</span></button>
+            
+            <?php echo $block->getChildHtml('', true) ?>
+        </div>
+    </div>
+</div>
+<?php 
+}
+
+if ($_product->isSaleable()): 
+if($_product->getTypeId() != "grouped"){
+?>
+<div class="box-tocart">
+    <div class="fieldset">
+        <?php if ($block->shouldRenderQuantity()): ?>
+        <div class="field qty">
+            <label class="label" for="qty"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label>
+            <div class="control">
+                <input type="number"
+                       name="qty"
+                       maxlength="12"
+                       value="<?php /* @escapeNotVerified */ echo $block->getProductDefaultQty() * 1 ?>"
+                       title="<?php /* @escapeNotVerified */ echo __('Qty') ?>" class="input-text qty"
+                       data-validate="<?php echo $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                       />
+            </div>
+        </div>
+        <?php endif;
+		
+		$product_StockObj = $_objectManager->get('Magento\CatalogInventory\Api\StockRegistryInterface')->getStockItem($_product->getId());
+		if( (int)$product_StockObj->getQty() <= 0 && $product_StockObj ->getBackorders() )
+		{
+		if($_product->getBackorderMessage()){ ?>
+        <div class="backorder-message"><?php echo  $_product->getBackorderMessage(); //backorder_message ?>
+		</div>
+		<?php }
+		}
+		 ?>
+        <div class="actions">
+            <button type="submit"
+                    title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                    class="action primary tocart"
+                    id="product-addtocart-button">
+                <span><?php /* @escapeNotVerified */ echo $buttonTitle ?></span>
+            </button>
+            
+            <button type="button" title="Select Options" class="scrolltodiv select-item action primary tocart" style="display:none;" ><span>Select Options</span></button>
+            
+            <?php echo $block->getChildHtml('', true) ?>
+        </div>
+    </div>
+</div>
+<?php 
+}
+?>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/product/view/validation": {
+                "radioCheckboxClosest": ".nested"
+            }
+        }
+    }
+</script>
+<?php if (!$block->isRedirectToCartEnabled()) : ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "catalogAddToCart": {
+                "bindSubmit": false
+            }
+        }
+    }
+</script>
+<?php endif; ?>
+
+<?php if( $_product->getTypeId() != 'simple' && $_product->getTypeId() != 'virtual' ): ?>
+<?php 
+if($_product->getTypeId() == 'configurable'){
+$oos_class = '';
+if(!$_product->isSaleable()){
+$oos_class = ' oos-pro';
+}
+?>
+      
+<div class="select-item <?php echo $oos_class; ?>" style="display:none;">
+<button type="button" class="scrolltodiv select-item action primary tocart" >Select Options</button>
+<button type="submit" class="select-item action primary tocart" style="display:none;" >
+                <span><?php /* @escapeNotVerified */ echo 'Select Options'; ?></span>
+            </button>
+</div>
+<?php 
+}else{
+
+$oos_class = '';
+if($allchild_saleable == 0){
+$oos_class = ' oos-pro';
+}
+?>
+      
+<div class="select-item  <?php echo $oos_class; ?>" style="display:none;">
+<button type="button" class="scrolltodiv select-item action primary tocart" >Select Items</button>
+<button type="submit" class="select-item action primary tocart" style="display:none;" >
+                <span><?php /* @escapeNotVerified */ echo 'Select Items'; ?></span>
+            </button>
+</div>
+<?php 
+}
+
+?>    
+<?php endif; ?>
+<?php /*if( $_product->getTypeId() == 'simple' && count($_product->getOptions()) != 0 ): ?>
+<div class="select-item"> 
+
+<button type="submit" class="select-item action primary tocart" >
+                <span><?php /* @escapeNotVerified * / echo 'Select Items'; ?></span>
+            </button>
+</div>
+<?php endif;*/ ?> 
+
+<?php 
+if($_product->getStatus()==2){
+	if($_product->getData('disable_product_msg') != ''){ 
+		echo "<div class='oos-msg'>".$_product->getData('disable_product_msg')."</div>";	
+	}
+}else{
+?>
+<?php if (!$_product->isSaleable() && $_product->getTypeId() != "grouped"): ?>
+<?php if($_product->getData('out_of_stock_message') != ''){ ?>
+<div class="oos-msg">
+<?php echo $_product->getData('out_of_stock_message'); ?>
+</div>
+<?php } ?>
+<?php endif; ?>
+
+
+
+<?php if ($_product->getTypeId() == "grouped" && $allchild_saleable == 0): ?>
+<?php if($_product->getData('out_of_stock_message') != ''){ ?>
+<div class="oos-msg">
+<?php echo $_product->getData('out_of_stock_message'); ?>
+</div>
+<?php } ?>
+<?php endif;
+}
+?>
+

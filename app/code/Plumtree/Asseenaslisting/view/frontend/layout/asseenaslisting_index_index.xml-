@@ -1,0 +1,50 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+
+	<head>
+        <title></title>
+        <!-- 
+		demo
+		<css src="Plumtree_Asseenaslisting::css/css.css"/>
+		<script src="Plumtree_Asseenaslisting::js/js.js"/>
+		<css src="jquery/fileUploader/css/jquery.fileupload-ui.css"/>
+		<script src="path/file.js" defer="defer"/>
+		<link src="http://url.com" src_type="url"/>
+		<remove src="path/remove/file.css"/>
+
+		-->
+		<css src="Plumtree_Asseenaslisting::css/jquery.fancybox.min.css"/>
+		<script src="Plumtree_Asseenaslisting::js/jquery.fancybox.min.js"/>
+		<script src="Plumtree_Asseenaslisting::js/js.js"/>
+    </head> 
+
+    <body>
+
+	<referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Home</item>
+                    <item name="label" xsi:type="string">Home</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">As Seen In</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">As Seen In</item>
+                    <item name="label" xsi:type="string">As Seen In</item>
+                </argument>
+            </action>
+        </referenceBlock>
+		
+        <referenceContainer name="sidebar.main">
+            <block class="Plumtree\Asseenaslisting\Block\Index\Sidebar" name="asseenaslisting_index_sidebar" before="-" template="Plumtree_Asseenaslisting::asseenaslisting_index_sidebar.phtml"/>
+        </referenceContainer>
+
+        <referenceContainer name="content">
+            <block class="Plumtree\Asseenaslisting\Block\Index\Index" name="asseenaslisting_index_index" template="Plumtree_Asseenaslisting::asseenaslisting_index_index.phtml"/>
+        </referenceContainer>
+
+
+    </body>
+</page>
