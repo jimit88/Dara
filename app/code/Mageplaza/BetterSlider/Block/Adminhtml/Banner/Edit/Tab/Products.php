@@ -59,7 +59,7 @@ class Products extends \Magento\Backend\Block\Widget\Grid\Extended
         $this->setSaveParametersInSession(true);
         $this->setUseAjax(true); 
         if ($this->getRequest()->getParam('banner_id')) {
-            $this->setDefaultFilter(array('in_product' => 1));
+            $this->setDefaultFilter(['in_product' => 1]);
         }
     }
 
@@ -167,7 +167,7 @@ class Products extends \Magento\Backend\Block\Widget\Grid\Extended
      */
     public function getGridUrl()
     {
-        return $this->getUrl('*/*/products', ['_current' => true]);
+        return $this->getUrl('*/*/productsgrid', ['_current' => true]);
     }
 
     /**

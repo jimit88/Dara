@@ -112,6 +112,9 @@ class Toolbar
             } elseif ($currentOrder == 'price_asc') {
                 $subject->getCollection()->setOrder('price', 'asc');
             }
+            if ($currentOrder == 'name') {
+                $subject->getCollection()->setOrder('name', 'asc');
+            }
         }
 
         return $result;

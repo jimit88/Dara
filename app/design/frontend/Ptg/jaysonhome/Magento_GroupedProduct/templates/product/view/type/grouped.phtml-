@@ -1,0 +1,287 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * Grouped product data template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\BaseImage
+ * @var $block \Magento\GroupedProduct\Block\Product\View\Type\Grouped
+ */
+?>
+
+<?php $block->setPreconfiguredValue(); ?>
+<?php $_product = $block->getProduct(); ?>
+<?php $_associatedProducts = $block->getAssociatedProducts(); ?>
+<?php $_hasAssociatedProducts = count($_associatedProducts) > 0; ?>
+<?php $_imagehelper = $this->helper('Magento\Catalog\Helper\Image'); ?>
+
+<?php  $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$priceHelper = $objectManager->create('Magento\Framework\Pricing\Helper\Data');
+ ?>
+<?php 
+$min_price = 111111111111;
+$max_price = 0;
+//var_dump();
+foreach( $_associatedProducts as $_associated_product ) {
+//$min_price[] = $_associated_product->getPrice();
+	if($min_price > $_associated_product->getPrice()){
+	$min_price = $_associated_product->getPrice();
+	} 
+	
+	if($max_price < $_associated_product->getPrice()){
+	$max_price = $_associated_product->getPrice();
+	}
+
+}
+
+echo "<div class='price-box price-final_price'><span class='mini-price'>".str_replace('.00', '',$priceHelper->currency($min_price, true, false))."</span>"; 
+if($min_price != $max_price){
+echo "<span class='max-price'> - ".str_replace('.00', '',$priceHelper->currency($max_price, false, false))."</span>"; 
+}
+echo "</div>"; 
+?>
+<div class="price-box price-final_price">
+<p class="rprc" style="display:none;"><span class="itemcnttotal retail-f"></span> </p></div>
+<div class="table-wrapper grouped">
+    <table class="table data grouped" id="super-product-table">
+        <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Grouped product items') ?></caption>
+        <thead>
+        <tr>
+        	<th class="col picture" scope="col"><?php /* @escapeNotVerified */ echo __('Product Picture') ?></th>
+            <th class="col item" scope="col"><?php /* @escapeNotVerified */ echo __('Product Name') ?></th>
+            <?php if ($_product->isSaleable()): ?>
+                <th class="col qty" scope="col"><?php /* @escapeNotVerified */ echo __('Qty') ?></th>
+            <?php endif; ?>
+        </tr>
+        </thead>
+
+        <?php if ($_hasAssociatedProducts): ?>
+        <?php $count = 0  ;?>
+        <?php foreach ($_associatedProducts as $_item): ?>
+        <?php  $item = $_item->getId() ;?>
+       <?php $product = $objectManager->create('Magento\Catalog\Model\Product')->load($item); ?>
+        <tbody>
+            <tr>
+            	<td class="col picture" scope="col">
+                        <?php $productImage = $block->getImage($product, 'product_thumbnail_image');
+						
+                       
+					  /* ?>
+					   <a class="weltpixel_quickview_button_v2 weltpixel-quickview" data-quickview-url="<?php echo $block->getUrl();?>weltpixel_quickview/catalog_product/view/id/<?php echo $_item->getId(); ?>/" href="javascript:void(0);"><?php echo $productImage->toHtml(); //echo __('Quick View') ?></a>
+						<?php 
+						*/ 
+						$images = $product->getMediaGalleryImages();
+						//var_dump(count($images));
+						if(count($images)<1){
+							echo $productImage->toHtml();
+						}else{
+						$i=0;
+						foreach($images as $child){ ?>
+							
+                            <a class="group-img-zoom" <?php if($i!=0){ echo "style='display:none;'" ;} ?> rel="group<?php echo $item; ?>" href="<?php echo $child->getUrl(); ?>"><img src="<?php echo $child->getUrl(); ?>" style="max-width: fit-content; max-width:-webkit-fit-content; max-width: -moz-fit-content;; width: 75px;" ></a>
+
+						<?php $i++; 
+						} 
+						}?>
+          
+                    </td>            	
+                    <td data-th="<?php echo $block->escapeHtml(__('Product Name')); ?>" class="col item">
+                    <strong class="product-item-name"><?php echo $block->escapeHtml($_item->getName()) ?></strong>
+                    <?php if ($block->getCanShowProductPrice($_product)): ?>
+                        <?php if ($block->getCanShowProductPrice($_item)): ?>
+                            <?php /* @escapeNotVerified */ echo $block->getProductPrice($_item) ?>
+                        <?php endif; ?>
+                     <?php endif; ?>
+                </td>
+                <?php if ($_product->isSaleable()): ?>
+                <td data-th="<?php echo $block->escapeHtml(__('Qty')); ?>" class="col qty">
+                <?php if ($_item->isSaleable()) : ?>
+                    <div class="control qty">
+                        <input type="number" name="super_group[<?php /* @escapeNotVerified */ echo $_item->getId() ?>]"
+                               data-selector="super_group[<?php /* @escapeNotVerified */ echo $_item->getId() ?>]"
+                               maxlength="12"
+                               value="<?php /* @escapeNotVerified */ echo $_item->getQty() * 1 ?>"
+                               title="<?php /* @escapeNotVerified */ echo __('Qty') ?>"
+                               class="input-text qty"
+                               data-validate="{'validate-grouped-qty':'#super-product-table'}"
+                               data-errors-message-box="#validation-message-box"/>
+                                <span class="gp-item-price" style="display:none;"><?php echo $_item->getPrice(); ?></span>
+                                <span class="gp-item-cnt" style="display:none;"></span>
+                    </div>
+                <?php else: ?>
+                    <div class="stock unavailable" title="<?php /* @escapeNotVerified */ echo __('Availability') ?>">
+                        <span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
+                    </div>
+                <?php endif; ?>
+                </td>
+                <?php endif; ?>
+            </tr>
+            <?php if ($block->getCanShowProductPrice($_product)
+                && $block->getCanShowProductPrice($_item)
+                && trim($block->getProductPriceHtml(
+                    $_item,
+                    \Magento\Catalog\Pricing\Price\TierPrice::PRICE_CODE
+                ))): ?>
+                <tr class="row-tier-price">
+                    <td colspan="2">
+                        <?php echo $block->getProductPriceHtml(
+                            $_item,
+                            \Magento\Catalog\Pricing\Price\TierPrice::PRICE_CODE
+                        ) ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+        <?php  $count ++ ;
+		/*if($count == 3) {
+		  break;
+	   } 
+	    /*$count  == 3 ;
+		continue;*/
+		?>
+        <?php endforeach; ?>
+               
+        <?php else: ?>
+        <tbody>
+            <tr>
+                <td class="unavailable"
+                    colspan="<?php if ($_product->isSaleable()): ?>4<?php else : ?>3<?php endif; ?>">
+                    <?php /* @escapeNotVerified */ echo __('No options of this product are available.') ?>
+                </td>
+            </tr>
+        </tbody>
+        <?php endif; ?>
+    </table>
+</div>
+<div id="validation-message-box"></div>
+
+
+<script type="text/javascript">
+require(['jquery', 'jquery/ui'], function($){
+$( document ).ajaxComplete(function() {  
+jQuery('div.product-add-form div.price-box.price-final_price:first').addClass('rng-price');
+		setTimeout(function() {
+
+		$('.group-img-zoom').fancybox({
+			fitToView: false,
+			beforeShow: function () {
+				this.width = 500;
+				this.height = 500;
+			}
+		});
+		}, 1400);
+
+	
+	// sticky price & item count
+	var totalofitem = 0;
+
+	$('div.inc').click(function(){
+		$('p.rprc').show();
+
+		totalofitem = parseFloat(totalofitem) + parseFloat($(this).parent().find("span.gp-item-price").text());
+		//totalofitemcnt++;
+		setTimeout(function() {
+			var totalofitemcnt = 0;
+			
+			$('.qty').each(function(){
+			//if( parseFloat($(this).val()) !== 'NaN'){ 
+			if( $.isNumeric($(this).val())){
+			 	totalofitemcnt = totalofitemcnt + parseFloat($(this).val());
+				}
+			});	
+			
+			if(totalofitemcnt != 0){
+				$('button.select-item').find('span').text('add to bag');
+				$('div.select-item button.scrolltodiv').addClass(' hide');
+				//alert('hide');
+				$('button.select-item').show();
+							
+			}else{
+				$('button.select-item').find('span').text('select items');
+				$('div.select-item button.scrolltodiv').removeClass(' hide');
+				//alert('show');
+				$('button.select-item').hide();
+			}
+			
+			//$('span.mini-price,span.max-price').hide();
+			if(totalofitemcnt<=0){
+				$('span.itemcnt').html("");	
+				jQuery('#product-addtocart-button').hide();
+				jQuery('.scrolltodiv').show();
+				jQuery('div.product-add-form div.price-box.price-final_price:first').addClass('rng-price');
+			}else{
+				$('span.itemcnt').html("("+totalofitemcnt+")");	
+				jQuery('#product-addtocart-button').show();
+				jQuery('.scrolltodiv').hide();
+				jQuery('div.product-add-form div.price-box.price-final_price:first').removeClass('rng-price');
+			}
+			
+			if(totalofitem<=0){
+			totalofitem = 0;
+			}
+			$('span.itemcnttotal').html("$"+totalofitem+".00");			
+			
+		}, 800);
+	});
+	$('div.dec').click(function(){
+		$('p.rprc').show();
+
+		totalofitem = parseFloat(totalofitem) - parseFloat($(this).parent().find("span.gp-item-price").text());
+		//--totalofitemcnt;
+		setTimeout(function() {
+			var totalofitemcnt = 0;
+			
+			$('.qty').each(function(){
+			if( $.isNumeric($(this).val())){
+			 	totalofitemcnt = totalofitemcnt + parseFloat($(this).val());
+				}
+			});	
+			
+			if(totalofitemcnt != 0){
+				$('button.select-item').find('span').text('add to bag');
+				$('div.select-item button.scrolltodiv').addClass(' hide');
+				$('button.select-item').show();
+						
+			}else{
+				$('button.select-item').find('span').text('select items');
+				$('div.select-item button.scrolltodiv').removeClass(' hide');
+				$('button.select-item').hide();
+			}	 
+			
+			//$('span.mini-price,span.max-price').hide();
+			if(totalofitemcnt<=0){
+				$('span.itemcnt').html("");	
+				jQuery('#product-addtocart-button').hide();
+				jQuery('.scrolltodiv').show();
+				jQuery('div.product-add-form div.price-box.price-final_price:first').addClass('rng-price');
+			}else{
+				$('span.itemcnt').html("("+totalofitemcnt+")");	
+				jQuery('#product-addtocart-button').show();
+				jQuery('.scrolltodiv').hide();
+				jQuery('div.product-add-form div.price-box.price-final_price:first').removeClass('rng-price');
+			}
+			
+			if(totalofitem<=0){
+			totalofitem = 0;
+			}
+			$('span.itemcnttotal').html("$"+totalofitem+".00");
+			
+		}, 800);
+	});
+	
+	$("button.scrolltodiv").on('click', function (e) {
+	e.preventDefault(); 
+		$('html,body').animate({
+			scrollTop: $("#maincontent").offset().top},800);
+	});
+	
+	
+	}); 
+}); 
+
+</script>

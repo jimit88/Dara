@@ -17,6 +17,6 @@
 -->
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/layout_generic.xsd">
     <container name="root" label="Root">
-        <block class="Mageplaza\BetterSlider\Block\Adminhtml\Productattach\Edit\Tab\Products" name="betterslider.edit.tab.products"/>
+        <block class="Mageplaza\BetterSlider\Block\Adminhtml\Banner\Edit\Tab\Products" name="betterslider.edit.tab.products"/>
     </container>
 </layout>

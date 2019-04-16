@@ -1,0 +1,180 @@
+@font-face {
+    font-family: 'ProximaNovaSemibold';
+    src: url('fonts/proximanova-semibold-webfont.eot');
+    src: url('fonts/proximanova-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/proximanova-semibold-webfont.woff') format('woff'),
+         url('fonts/proximanova-semibold-webfont.ttf') format('truetype'),
+         url('fonts/proximanova-semibold-webfont.svg#ProximaNovaSemibold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+font-family: 'ProximaNova-Light';
+src: url('fonts/proximanova-light-webfont.eot');
+src: url('fonts/proximanova-light-webfont.eot?#iefix') format('embedded-opentype'),
+url('fonts/proximanova-light-webfont.woff') format('woff'),
+url('fonts/proximanova-light-webfont.ttf') format('truetype'),
+url('fonts/proximanova-light-webfont.svg#proximanova-light-webfont') format('svg');
+font-weight: normal;
+font-style: normal;
+		}
+a {list-style:none; text-decoration:none;}
+* {margin:0px; padding:0px;}
+
+
+.header-top {    text-align: center;
+    text-transform: none;
+    font-size: 13px;
+    padding: 7px 0 7px;
+    letter-spacing: 0.1em;
+    background: #000000;
+    color: #fff;
+    font-family: 'ProximaNova-Light';}
+	
+.header-top .container a.btn-top {font-family:"Myriad Pro"; font-size:13px; line-height:normal; color:#fff; padding:0px; margin:0px 0px 0px; font-weight:bold; font-style:italic;}
+.header-top .container a.btn-top:after {content:""; font-family: 'FontAwesome'; font-weight: normal;
+  font-style: normal;}
+.header-top .close {position:relative; text-indent:-9999em; width:17px; height:17px; background:url(../images/x-icon.png) no-repeat left top; float:right; background-size:17px 17px; display:block; right:17px;}
+
+
+
+img {padding:0px; margin:0px; line-height:0px; outline:none; max-width:100%;}
+.hp-banner-area {position:relative; margin:0 0 39px;}
+.hp-banner-image {line-height:0px;}
+.hp-banner-detail {width:560px; float:left; padding:0px; margin:0px 0px 39px; position:absolute; left:7%; top:104px;}
+.hp-banner-detail h2{font-family: 'ProximaNova-Light'; font-weight:normal; font-size:48px; line-height:48px; color:#fff; text-transform:uppercase; letter-spacing:2px; margin:0 0 19px; padding:0px;}
+.hp-banner-detail h4 {font-family:"Myriad Pro"; font-size:16px; line-height:24px; color:#fff; padding:0px; margin:0px 0px 61px; font-weight:normal; width:370px;}
+.hp-banner-btn-area {float:left;}
+.hp-banner-btn {
+	-webkit-transition: all 0.4s ease; -moz-transition: all 0.4s ease; -o-transition: all 0.4s ease; transition: all 0.4s ease;
+	background:none #fff; font-family: 'ProximaNovaSemibold'; font-weight:normal; font-size:14px; line-height:48px; text-transform:uppercase; letter-spacing:2px; color:#000; float:left;
+	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1);
+-moz-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1);
+box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1); }
+.hp-banner-btn:hover {-webkit-box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1);
+-moz-box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1);
+box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1); }
+.hp-banner-btn span.cta-btn-text {color:#000; font-size:14px; float:left; padding:0 15px 0 18px;}
+.hp-banner-btn span.cta-btn-icon {line-height:0px; float:right; padding:0px 15px 0 0; width:37px; background:url(../images/hp-banner-btn-arrow.png) no-repeat left 16px; height:48px; float:right; display:block; }
+
+
+.hp-free-shipping-banner-area {position:relative; margin:0px; float:left;}
+.hp-fs-banner-image {line-height:0px;}
+.hp-fs-banner-detail {width:440px; padding:66px 0px 56px 53px; margin:0px 0px 0px; position:absolute; right:0%; top:75px; background:none #fff; float:right;}
+.hp-fs-banner-detail h2{font-family: 'ProximaNova-Light'; font-weight:normal; font-size:30px; line-height:normal; color:#000; text-transform:uppercase; letter-spacing:2px; margin:0 0 0px; padding:0px 0px 56px 0px;}
+.hp-fs-banner-detail h4 {font-family:"Myriad Pro"; font-size:16px; line-height:24px; color:#000; padding:0px; margin:0px 0px 52px; font-weight:normal; }
+.hp-fs-banner-btn-area {float:left;}
+.hp-fs-banner-btn-area .hp-fs-banner-btn:last-child {margin-left:34px; float:left}
+.hp-fs-banner-btn {
+	-webkit-transition: all 0.4s ease; -moz-transition: all 0.4s ease; -o-transition: all 0.4s ease; transition: all 0.4s ease;
+	background:none #fff; font-family: 'ProximaNovaSemibold'; font-weight:normal; font-size:14px; line-height:48px; text-transform:uppercase; letter-spacing:2px; color:#000; float:left;
+	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1);
+-moz-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1);
+box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1); }
+.hp-fs-banner-btn:hover {-webkit-box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1);
+-moz-box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1);
+box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1); }
+.hp-fs-banner-btn span.cta-btn-text {color:#000; font-size:14px; float:left; padding:0 13px 0 18px;}
+.hp-fs-banner-btn span.cta-btn-icon {line-height:0px; float:right; padding:0px 13px 0 0; width:37px; background:url(../images/hp-banner-btn-arrow.png) no-repeat left 17px; height:48px;}
+
+
+
+.hp-live-beauti {float:left; padding:121px 0 0 105px; position:relative; margin:0px;}
+.hp-lb-img {line-height:0px; margin:0px; padding:0px;}
+.hp-lb-content {font-family: 'ProximaNovaSemibold'; font-weight:normal; font-size:22px; color:#000; text-transform:uppercase; letter-spacing:2.1px; padding:0 0 108px 318px; margin:-32px 0 0; width:818px;}
+
+
+.hp-morrocco-area {float:left; padding:0px; position:relative; margin:0px auto 100px; width:100%; }
+.hp-morrocco-fix-area {margin:0 auto; max-width:1196px;}
+.hp-morrocco-img-area {line-height:0px; margin:0px 0 0 40px;}
+.hp-morrocco-rgt-img {position:absolute; right:0; bottom:56px; padding:0px; margin:0px; line-height:0px; z-index:10;}
+
+.hp-morrocco-content-area {float:right; padding:0px; margin:0px; position:absolute; top:38px; right:2.5%;}
+.hp-morrocco-detail {background:none #f6f7fa; padding:80px 66px 91px 62px; margin:0px; float:left; width:334px;}
+
+.hp-morrocco-detail h2{font-family: 'ProximaNova-Light'; font-weight:normal; font-size:30px; line-height:normal; color:#000; text-transform:uppercase; letter-spacing:2px; margin:0 0 0px; padding:0px 0px 36px 0px;}
+.hp-morrocco-detail h4 {font-family:"Myriad Pro"; font-size:16px; line-height:24px; color:#000; padding:0px; margin:0px 0px 52px; font-weight:normal; }
+.hp-morrocco-detail {float:left;}
+
+.hp-morrocco-btn {
+	-webkit-transition: all 0.4s ease; -moz-transition: all 0.4s ease; -o-transition: all 0.4s ease; transition: all 0.4s ease;
+	background:none #fff; font-family: 'ProximaNovaSemibold'; font-weight:normal; font-size:14px; line-height:48px; text-transform:uppercase;  letter-spacing:2px; color:#000; float:left;
+	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1);
+-moz-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1);
+box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1); }
+.hp-morrocco-btn:hover {-webkit-box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1);
+-moz-box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1);
+box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1); }
+.hp-morrocco-btn span.cta-btn-text {color:#000; font-size:14px; float:left; padding:0 15px 0 18px;}
+.hp-morrocco-btn span.cta-btn-icon {line-height:0px; float:right; padding:0px 13px 0 0; width:37px; background:url(../images/hp-banner-btn-arrow.png) no-repeat left 17px; height:48px;}
+
+
+
+.hp-siws-banner-area {position:relative; margin:0px 0 63px; float:left;}
+.hp-siws-banner-image {line-height:0px;}
+.hp-siws-banner-detail {width:440px; padding:66px 0px 56px 53px; margin:0px 0px 0px; position:absolute; right:0%; top:75px; background:none #fff; float:right;}
+.hp-siws-banner-detail h2{font-family: 'ProximaNova-Light'; font-weight:normal; font-size:30px; line-height:normal; color:#000; text-transform:uppercase; letter-spacing:2px; margin:0 0 0px; padding:0px 0px 20px 0px;}
+.hp-siws-banner-detail h4 {font-family:"Myriad Pro"; font-size:16px; line-height:24px; color:#000; padding:0px; margin:0px 0px 45px; font-weight:normal; }
+.hp-siws-banner-btn-area {float:left;}
+
+.hp-siws-banner-btn {
+	-webkit-transition: all 0.4s ease; -moz-transition: all 0.4s ease; -o-transition: all 0.4s ease; transition: all 0.4s ease;
+	background:none #fff; font-family: 'ProximaNovaSemibold'; font-weight:normal; font-size:14px; line-height:48px; text-transform:uppercase; letter-spacing:2px; color:#000; float:left;
+	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1);
+-moz-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1);
+box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1); }
+.hp-siws-banner-btn:hover {-webkit-box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1);
+-moz-box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1);
+box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1); }
+.hp-siws-banner-btn span.cta-btn-text {color:#000; font-size:14px; float:left; padding:0 13px 0 18px;}
+.hp-siws-banner-btn span.cta-btn-icon {line-height:0px; float:right; padding:0px 13px 0 0; width:37px; background:url(../images/hp-banner-btn-arrow.png) no-repeat left 17px; height:48px;}
+
+
+.hp-instore-area {float:left; padding:0px; position:relative; margin:0px auto 100px; width:100%;}
+.hp-instore-fix-area {margin:0 auto; max-width:1196px;}
+.hp-instore-img-area {line-height:0px; margin:0px 0 0 40px; float:right;}
+.hp-instore-rgt-img {position:absolute; right:0; bottom:56px; padding:0px; margin:0px; line-height:0px; z-index:10;}
+
+.hp-instore-content-area {float:left; padding:0px; margin:0px; position:absolute; top:38px; }
+.hp-instore-detail {background:none #f6f7fa; padding:80px 66px 91px 62px; margin:0px; float:left; width:334px;}
+
+.hp-instore-detail h2{font-family: 'ProximaNova-Light'; font-weight:normal; font-size:30px; line-height:normal; color:#000; text-transform:uppercase; letter-spacing:2px; margin:0 0 0px; padding:0px 0px 36px 0px;}
+.hp-instore-detail h4 {font-family:"Myriad Pro"; font-size:16px; line-height:24px; color:#000; padding:0px; margin:0px 0px 52px; font-weight:normal; }
+.hp-instore-detail {float:left;}
+
+.hp-instore-btn {
+	-webkit-transition: all 0.4s ease; -moz-transition: all 0.4s ease; -o-transition: all 0.4s ease; transition: all 0.4s ease;
+	background:none #fff; font-family: 'ProximaNovaSemibold'; font-weight:normal; font-size:14px; line-height:48px; text-transform:uppercase;  letter-spacing:2px; color:#000; float:left;
+	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1);
+-moz-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1);
+box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,1); }
+.hp-instore-btn:hover {-webkit-box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1);
+-moz-box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1);
+box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,1); }
+.hp-instore-btn span.cta-btn-text {color:#000; font-size:14px; float:left; padding:0 15px 0 18px;}
+.hp-instore-btn span.cta-btn-icon {line-height:0px; float:right; padding:0px 13px 0 0; width:37px; background:url(../images/hp-banner-btn-arrow.png) no-repeat left 17px; height:48px;}
+
+
+.new-arrivals-section {position:relative; float:left; width:100%;}
+.nr-heading-area {border-bottom:1px solid #000000; padding:0px; margin:0px; float:left; width:100%;}
+.nr-sub-title {font-family: 'ProximaNova-Light'; font-weight:normal; font-size:30px; line-height:normal; float:left; padding:0 0 6px 25px; margin:0px; text-transform:uppercase; color:#000;  letter-spacing:2px;}
+.nr-rgt-btn-link {float:right; padding:11px 3px 0 0; margin:0px; font-family: 'ProximaNovaSemibold'; font-weight:normal; font-size:14px; text-transform:uppercase;  letter-spacing:2px; color:#000; }
+.nr-rgt-btn-link a {background:url(../images/hp-banner-btn-arrow.png) no-repeat right 1px; color:#000; padding:0 48px 0 0; text-decoration:none;}
+.block-new-products .block-title {display:none;}
+
+
+
+
+.block-static-block.widget,
+.block-cms-link.widget {margin-bottom:0px;}
+
+/* Footer
+============================== */
+.footer.content .links {display:none;}
+.block.newsletter {float:left; }
+.block.newsletter .title {display:block;}
+
+.copyright {background:none transparent; color:#a3a3a3; text-align:right; max-width:1200px; padding:10px 0px;}
+.copyright span {padding:0 62px 0 0;}

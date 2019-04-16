@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category  Impact
+ * @package   Impact_PixelIntegration
+ * @author    Impact
+ * @copyright Copyright (c) Impact Tech, Inc (http://www.impact.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceBlock name="head.additional">
+            <block class="Impact\PixelIntegration\Block\UniversalPixel" name="impact.utt.load" template="Impact_PixelIntegration::utt.phtml" />
+    </referenceBlock>
+    <referenceContainer name="after.body.start">
+        <block class="Impact\PixelIntegration\Block\InvokeEvents" name="impact.fire.events" template="Impact_PixelIntegration::identify.phtml"/>
+    </referenceContainer>
+</page>

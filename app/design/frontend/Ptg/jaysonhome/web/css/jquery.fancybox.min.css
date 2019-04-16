@@ -258,7 +258,7 @@
 	background: rgba(0, 0, 0, .8);
 }
 @media only screen and (max-width: 600px) {
-.fancybox-inner {width:100%!important; height:100%!important;}
+.fancybox-inner {width:100%!important; height:400px!important;/*height:100%!important;*/}
 .fancybox-wrap.fancybox-opened {width:90%!important;}
 }
 @media only screen and (max-width: 380px) {

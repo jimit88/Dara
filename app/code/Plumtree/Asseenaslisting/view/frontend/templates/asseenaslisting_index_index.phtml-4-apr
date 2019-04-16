@@ -1,0 +1,166 @@
+
+<div class="as-see-in-list-title">
+  <h1>in the press</h1>
+</div>
+<div class="main-banner-listing asseein-list">
+  <?php 
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance(); // Instance of object manager
+$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+$connection = $resource->getConnection();
+$tableName = $resource->getTableName('mageplaza_betterslider_banner');
+$_pro_tableName = $resource->getTableName('mageplaza_product_attachment_rel');
+
+$media_path = '';
+
+
+if (strpos($this->getBaseUrl(), '192.168.1.151/jaysonhome') !== false) {
+	$media_path = 'pub';
+}else{
+	$media_path = '';
+}
+
+//Select Data from table
+$sql = "Select * FROM " . $tableName."  WHERE `status` = '1' ORDER BY `url` ASC";
+$result = $connection->fetchAll($sql);
+
+
+$i=0;
+foreach($result as $_result){
+if($_result['type'] == 1){
+?>
+  <div class="banner-group">
+    <div id="<?php echo 'featured-'.$_result['banner_id']; ?>" class="banner-imges">
+      <?php
+	  
+	  	$img_name = '';
+		$img_path = '';
+	
+	  ?>
+
+<?php if(isset($_result['upload_file_1']) && $_result['upload_file_1'] != ''){ ?>
+      <div class="maz_1"> 
+      <?php 
+	  	$img_name = basename($_result['upload_file']);
+		$img_path = dirname($_result['upload_file']);
+	  ?>
+      <a href="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file']; ?>" data-fancybox="images-preview-<?php echo $i; ?>" rel="images-preview-<?php echo $i; ?>" class="asseenimg"> 
+      	<?php if (@getimagesize($this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file'])) { ?>
+      	<img src="<?php echo $block->resize($img_path,$img_name,200,200); //$this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file']; ?>" /> 
+      	<?php } ?>
+      </a> 
+      </div>
+      
+      <div class="maz_2">
+      <?php 
+	  	$img_name = basename($_result['upload_file_1']);
+		$img_path = dirname($_result['upload_file_1']);
+	  ?> 
+      <a href="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_1']; ?>"  data-fancybox="images-preview-<?php echo $i; ?>" rel="images-preview-<?php echo $i; ?>" class="asseenimg"> 
+      	<?php if (@getimagesize($this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_1'])) { ?>
+      	<img src="<?php echo $block->resize($img_path,$img_name,200,200); //$this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_1']; ?>" /> 
+      	<?php } ?>
+      </a> 
+      </div>
+<?php } ?>
+
+	<?php if(isset($_result['name'])){ ?>
+      <?php $_name =  explode(",", $_result['name']); ?>
+      <?php if(isset($_name[0]) && isset($_name[1])){ ?>
+	  <p class="maz_name"><span class="maz_main_name"><?php echo $_name[0];?></span><span class="maz_dt"><?php echo $_name[1];?></span></p>
+     <?php } ?>
+ 	<?php } ?>
+     <div style="display: none;"> 
+     <?php if(isset($_result['upload_file_2'])){ ?>
+     <a href="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_2']; ?>" rel="images-preview-<?php echo $i; ?>" data-fancybox="images-preview-<?php echo $i; ?>"
+     data-thumb="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_2']; ?>" class="asseenimg"></a> 
+     <?php } ?>
+     <?php if(isset($_result['upload_file_3'])){ ?>
+     <a href="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_3']; ?>" rel="images-preview-<?php echo $i; ?>" data-fancybox="images-preview-<?php echo $i; ?>"
+     data-thumb="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_3']; ?>" class="asseenimg"></a> 
+     <?php } ?>
+     <?php if(isset($_result['upload_file_4'])){ ?>
+     <a href="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_4']; ?>" rel="images-preview-<?php echo $i; ?>" data-fancybox="images-preview-<?php echo $i; ?>"
+     data-thumb="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_4']; ?>" class="asseenimg"></a> 
+     <?php } ?>
+     <?php if(isset($_result['upload_file_5'])){ ?>
+     <a href="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_5']; ?>" rel="images-preview-<?php echo $i; ?>" data-fancybox="images-preview-<?php echo $i; ?>"
+     data-thumb="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_5']; ?>" class="asseenimg"></a> 
+     <?php } ?>
+     </div>
+    </div>
+    <?php 
+	$sql_pro_query = "Select product_id FROM " . $_pro_tableName." WHERE banner_id = '".$_result['banner_id']."' ";
+	$result_prodata = $connection->fetchAll($sql_pro_query);
+	
+	if(count($result_prodata)>0){
+	?>
+    <div class="banner-products owl-carousel owl-theme">
+    <?php 
+	// get products	
+	
+	
+	foreach($result_prodata as $pro_data){
+		
+		$produ_ct_info = $objectManager->get('Magento\Catalog\Model\Product')->load($pro_data['product_id']);
+		
+	if($produ_ct_info['status'] == 1 && $produ_ct_info['visibility'] != 1 && $produ_ct_info['name'] != ''){
+		
+	?>
+    
+      <div class="product-content"> <img src="<?php echo $this->helper('Magento\Catalog\Helper\Image')->init($produ_ct_info, 'product_page_image_large')->constrainOnly(true)->keepAspectRatio(true)->keepFrame(true)->setImageFile($produ_ct_info['image'])->resize(1436, 1124)->getUrl() /*echo $this->getBaseUrl().$media_path; ?>/media/catalog/product<?php echo $produ_ct_info['image']; */ ?>" style="width: 455px;" class="product-img" /> <a class="weltpixel-quickview" href="javascript: void(0);" data-quickview-url="<?php echo $this->getBaseUrl(); ?>/weltpixel_quickview/catalog_product/view/id/<?php echo $pro_data['product_id']; ?>">
+        <div class="title"><?php echo $produ_ct_info['name']; ?><span></span></div>
+        </a>
+       </div>
+     <?php }} ?>
+     
+       
+    </div>
+    <?php } ?>
+  </div>
+  <?php 
+$i++;
+}
+}
+ 
+?>
+</div>
+
+
+  <?php
+  
+    $smartspeed_variable = $objectManager->create('Magento\Variable\Model\Variable');
+
+    $smartspeed = $smartspeed_variable->loadByCode('as-seen-in-smartSpeed')->getHtmlValue();
+    ?>
+<script>
+require(['jquery', 'jquery/ui'], function($){
+$('.banner-products').owlCarousel({
+            items:1,
+            autoplay:true,
+            loop:true,
+            margin:10,
+			autoplay: 3000, // time for slides changes
+			smartSpeed: <?php if($smartspeed){echo $smartspeed;}else{ echo 1000;} ?>, // duration of change of 1 slide
+			navRewind: true,
+			nav: true,
+			navText: ["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"]
+        });
+		
+		setTimeout(function(){
+			 $('a.asseenimg').fancybox({
+				fitToView: true,
+        width:400,
+        height:300,
+        autoSize: false,
+        autoWidth : false,
+				
+			});	
+		}, 2500);
+		 $("body").addClass("asseenaslisting-index-index");
+		
+});
+</script>
+
+ 
+

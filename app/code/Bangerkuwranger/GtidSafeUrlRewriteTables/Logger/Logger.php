@@ -6,7 +6,7 @@
  * @package    Bangerkuwranger/GtidSafeUrlRewriteTables
  * @author     Chad A. Carino <artist@chadacarino.com>
  * @author     Burak Bingollu <burak.bingollu@gmail.com>
- * @copyright  2017 Chad A. Carino
+ * @copyright  2017 Chad A. Carino 
  * @license    https://opensource.org/licenses/MIT  MIT License
  */
 namespace Bangerkuwranger\GtidSafeUrlRewriteTables\Logger;

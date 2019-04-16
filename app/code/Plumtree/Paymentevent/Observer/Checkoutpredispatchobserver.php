@@ -112,7 +112,7 @@ class Checkoutpredispatchobserver implements ObserverInterface
 				
 			$customer->setPassword($decode);
 			$customer->save();
-			$customer->sendNewAccountEmail();
+			//$customer->sendNewAccountEmail();
 			
 			////// add address to customer start
 			$addresss = $objectManager->get('\Magento\Customer\Model\AddressFactory');

@@ -71,14 +71,6 @@ if($_result['type'] == 1){
      <?php } ?>
  	<?php } ?>
      <div style="display: none;"> 
-     <?php if(isset($_result['upload_file'])){ ?>
-     <a href="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file']; ?>" data-fancybox="images-preview-<?php echo $i; ?>"
-     rel="images-preview-<?php echo $i; ?>" data-thumb="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file']; ?>" class="asseenimg"></a> 
-     <?php } ?>
-     <?php if(isset($_result['upload_file_1'])){ ?>
-     <a href="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_1']; ?>" rel="images-preview-<?php echo $i; ?>" data-fancybox="images-preview-<?php echo $i; ?>"
-     data-thumb="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_1']; ?>" class="asseenimg"></a> 
-     <?php } ?>
      <?php if(isset($_result['upload_file_2'])){ ?>
      <a href="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_2']; ?>" rel="images-preview-<?php echo $i; ?>" data-fancybox="images-preview-<?php echo $i; ?>"
      data-thumb="<?php echo $this->getBaseUrl().$media_path."/media/mageplaza/betterslider/banner/image".$_result['upload_file_2']; ?>" class="asseenimg"></a> 
@@ -148,24 +140,31 @@ $('.banner-products').owlCarousel({
             autoplay:true,
             loop:true,
             margin:10,
-			autoplay: 3000, // time for slides changes
-			smartSpeed: <?php if($smartspeed){echo $smartspeed;}else{ echo 1000;} ?>, // duration of change of 1 slide
-			navRewind: true,
-			nav: true,
-			navText: ["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"]
+      autoplay: 3000, // time for slides changes
+      smartSpeed: <?php if($smartspeed){echo $smartspeed;}else{ echo 1000;} ?>, // duration of change of 1 slide
+      navRewind: true,
+      nav: true,
+      navText: ["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"]
         });
-		
-		setTimeout(function(){
-			 $('a.asseenimg').fancybox({
-				fitToView: false,
-				autoSize: true,
-				
-			});	
-		}, 2500);
-		 $("body").addClass("asseenaslisting-index-index");
-		
 });
 </script>
-
- 
-
+<script type="text/javascript">
+require(['jquery', 'jquery/ui'], function($){
+    $("body").addClass("asseenaslisting-index-index");
+    setTimeout(function(){
+        $(document).ready(function(){          
+            if($('a.asseenimg').length > 0){
+                $('.asseenimg').css('pointer-events', 'all');            
+                $('a.asseenimg').fancybox({
+                    fitToView: true,
+                    width:400,
+                    height:300,
+                    autoSize: false,
+                    autoWidth : false,
+                    
+                });
+            }
+        });
+    }, 1000);
+});
+</script>

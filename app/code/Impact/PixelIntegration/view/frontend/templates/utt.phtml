@@ -1,0 +1,26 @@
+<?php 
+/**
+ * @var \Impact\PixelIntegration\Block\UniversalPixel $block
+ */
+    $src = $block->getSource();
+?>
+<?php if($block->isEnabled()): ?>
+<!-- Impact Universal Tracking Tag -->
+<script type="text/javascript"> (function(a,b,c,d,e,f,g){e['ire_o']=c;e[c]= e[c]||function(){(e[c].a=e[c].a||[]).push(arguments)};f=d.createElement(b);g=d.getElementsByTagName(b)[0];f.async=1;f.src=a;g.parentNode.insertBefore(f,g);})('//d.impactradius-event.com/<?php echo $src; ?>','script','ire',document,window);</script>
+<script type="text/javascript">
+var mergeDatalayers = function() {
+    var obj = {},
+        i = 0,
+        il = arguments.length,
+        key;
+    for (; i < il; i++) {
+        for (key in arguments[i]) {
+            if (arguments[i].hasOwnProperty(key)) {
+                obj[key] = arguments[i][key];
+            }
+        }
+    }
+    return obj; 
+};
+</script>
+<?php endif; ?>

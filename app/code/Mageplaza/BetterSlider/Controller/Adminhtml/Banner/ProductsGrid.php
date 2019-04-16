@@ -40,7 +40,6 @@ class ProductsGrid extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-	echo 'bbbbbbbbbbbb'; die;
         $resultLayout = $this->_resultLayoutFactory->create();
         $resultLayout->getLayout()->getBlock('betterslider.edit.tab.products')
                      ->setInBanner($this->getRequest()->getPost('index_products', null));

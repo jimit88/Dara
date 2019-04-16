@@ -50,9 +50,10 @@
             memoryActive: <?php echo $block->isMemoryActive() ? 'true' : 'false'; ?>
         };
         require(['jquery', 'jqueryIas', 'infinitescroll'], function($){
-            $(window).load(function() {
+            
                 // InfiniteScroll:
-                SgyIAS.init();
+                setTimeout(function(){ SgyIAS.init(); }, 1500);
+
 				
 				var loadcnt = 0;
 				$('div.load-more-items-btn').click(function(){
@@ -62,9 +63,6 @@
 					}
 					
 					$('div.loading-img').show(0).delay(7000).hide(0);
-					/*$( document ).ajaxComplete(function() {  
-						$('div.loading-img').hide();
-					});*/
 				});
 				
 				$(window).scroll(function() {
@@ -72,36 +70,13 @@
 				   		console.log($('div.products.wrapper.grid.products-grid li.item').length);
 					if($('div.products.wrapper.grid.products-grid li.item').length < $('span.toolbar-number:last').text()){	
 					   $('div.load-more-items-btn').trigger('click');
-					  // $('div.loading-img').show(0).delay(7000).hide(0);
 					   }else{
 					   $('div.loading-img').hide();
 					   }
 				   }
 				});
 
-				/*$(document).scroll(function(){
-				   if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.7){
-				    var c_url = window.location.href;
-					var arguments = c_url.split('p=').pop();
-				    //check if there are more products to be loaded or not
-					
-					//$('.load-more-items-btn').hide();
-				   
-					if(arguments>2){	
-						$('div.load-more-items-btn').css('opacity','0');
-							$(document).ready(function () {
-								$('div.load-more-items-btn').trigger('click');
-								
-							});
-						
-						//check if there are more products to be loaded or not
-					   $('.load-more-items-btn').hide();
-							
-
-					}
-					}
-				 });*/
-            });
+            
         });
     </script>
 <?php endif ?>
