@@ -14,6 +14,8 @@ class Collection extends \Magento\Reports\Model\ResourceModel\Product\Sold\Colle
     protected function _joinFields($fromDate = '', $toDate = '')
     {
         $this->groupByProductGroup($fromDate, $toDate);
+           // ->addOrdersCount()
+            //->addAttributeToFilter('created_at', array('from' => $fromDate, 'to' => $toDate, 'datetime' => true));
         return $this;
     }
 
@@ -27,6 +29,9 @@ class Collection extends \Magento\Reports\Model\ResourceModel\Product\Sold\Colle
     public function setDateRange($fromDate, $toDate)
     {
         $this->_reset()->_joinFields($fromDate, $toDate);
+        //$this->getSelect()->__toString();
+        //echo "********".$this->getSelect();
+        //die;
         return $this;
     }
     
@@ -40,7 +45,9 @@ class Collection extends \Magento\Reports\Model\ResourceModel\Product\Sold\Colle
      */
     public function groupByProductGroup($fromDate = '', $toDate = '')
     {
-        
+        /*$this->getSelect()->join(array('customer_group' => 'customer_group' ), 'customer_group.customer_group_id = main_table.customer_group_id', array('customer_group.customer_group_code'))
+            ->where('main_table.customer_group_id IS NOT NULL')
+            ->group('main_table.customer_group_id');*/
 
         $connection = $this->getConnection();
         $orderTableAliasName = $connection->quoteIdentifier('order');
@@ -51,6 +58,7 @@ class Collection extends \Magento\Reports\Model\ResourceModel\Product\Sold\Colle
         ];
 
         if ($fromDate != '' && $toDate != '') {
+            //echo "88888"; die;
             $fieldName = $orderTableAliasName . '.created_at';
             $orderJoinCondition[] = $this->prepareBetweenSql($fieldName, $fromDate, $toDate);
         }
@@ -94,6 +102,13 @@ class Collection extends \Magento\Reports\Model\ResourceModel\Product\Sold\Colle
     
     public function setStoreIds($storeIds)
     {
+        /*if ($storeIds) {
+            $this->addAttributeToFilter('store_id', ['in' => (array)$storeIds]);
+            //$this->addSumAvgTotals(1)->orderByOrdersCount();
+        } else {
+            //$this->addSumAvgTotals()->orderByOrdersCount();
+        }*/
+
         return $this;
     }
 }

@@ -55,53 +55,6 @@
                     <argument name="header_css_class" xsi:type="string">col-qty</argument>
                 </arguments>
             </block>
-            <!-- <block class="Magento\Backend\Block\Widget\Grid\Column" name="adminhtml.report.grid.columnSet.customer_group_code" as="customer_group_code">
-                <arguments>
-                    <argument name="header" xsi:type="string" translate="true">Customer Group</argument>
-                    <argument name="sortable" xsi:type="string">0</argument>
-                    <argument name="type" xsi:type="string">text</argument>
-                    <argument name="index" xsi:type="string">customer_group_code</argument>
-                    <argument name="id" xsi:type="string">customer_group_code</argument>
-                    <argument name="column_css_class" xsi:type="string">col-name</argument>
-                    <argument name="header_css_class" xsi:type="string">col-name</argument>
-                </arguments>
-            </block>
-
-            <block class="Magento\Backend\Block\Widget\Grid\Column" name="adminhtml.report.grid.columnSet.customer_group_code" as="customer_group_code">
-                <arguments>
-                    <argument name="header" xsi:type="string" translate="true">Customer Group</argument>
-                    <argument name="sortable" xsi:type="string">0</argument>
-                    <argument name="type" xsi:type="string">text</argument>
-                    <argument name="index" xsi:type="string">customer_group_code</argument>
-                    <argument name="id" xsi:type="string">customer_group_code</argument>
-                    <argument name="column_css_class" xsi:type="string">col-name</argument>
-                    <argument name="header_css_class" xsi:type="string">col-name</argument>
-                </arguments>
-            </block>
-            <block class="Magento\Backend\Block\Widget\Grid\Column" name="adminhtml.report.grid.columnSet.orders_avg_amount" as="orders_avg_amount">
-                <arguments>
-                    <argument name="header" xsi:type="string" translate="true">Average Order Amount</argument>
-                    <argument name="sortable" xsi:type="string">0</argument>
-                    <argument name="type" xsi:type="string">currency</argument>
-                    <argument name="total" xsi:type="string">orders_sum_amount/orders_count</argument>
-                    <argument name="index" xsi:type="string">orders_avg_amount</argument>
-                    <argument name="id" xsi:type="string">orders_avg_amount</argument>
-                    <argument name="column_css_class" xsi:type="string">col-average</argument>
-                    <argument name="header_css_class" xsi:type="string">col-average</argument>
-                </arguments>
-            </block>
-            <block class="Magento\Backend\Block\Widget\Grid\Column" name="adminhtml.report.grid.columnSet.orders_sum_amount" as="orders_sum_amount">
-                <arguments>
-                    <argument name="header" xsi:type="string" translate="true">Total Order Amount</argument>
-                    <argument name="sortable" xsi:type="string">0</argument>
-                    <argument name="type" xsi:type="string">currency</argument>
-                    <argument name="total" xsi:type="string">sum</argument>
-                    <argument name="index" xsi:type="string">orders_sum_amount</argument>
-                    <argument name="id" xsi:type="string">orders_sum_amount</argument>
-                    <argument name="column_css_class" xsi:type="string">col-total</argument>
-                    <argument name="header_css_class" xsi:type="string">col-total</argument>
-                </arguments>
-            </block> -->
         </referenceBlock>
     </body>
 </page>
