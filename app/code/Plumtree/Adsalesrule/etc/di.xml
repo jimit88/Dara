@@ -1,4 +1,0 @@
-<?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-<preference for="Magento\AdvancedSalesRule\Model\Rule\Condition\ConcreteCondition\Product\Categories" type="Plumtree\Adsalesrule\Model\Rule\Condition\ConcreteCondition\Product\Categories" />
-</config>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>        
+        <add id="Plumtree_Reportordereditems::itemsbyproduct" title="Ordered Items" module="Plumtree_Reportordereditems" sortOrder="10" action="plumtreereportordereditems/itemsbyproduct" resource="Plumtree_Reportordereditems::itemsbyproduct" parent="Magento_Reports::report_products"/>
+    </menu>
+</config>
